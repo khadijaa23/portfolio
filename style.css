@@ -44,6 +44,7 @@
     /* --- Other --- */
     --radius: 6px;
     --max-width: 900px;
+    --header-height: 4rem;
   }
   
   /* Dark theme values. These override the tokens above when the <html> element
@@ -164,7 +165,8 @@
   .timeline-date,
   .project-type,
   .tags,
-  .footer-links {
+  .footer-links,
+  .skill-group h3 {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     letter-spacing: -0.01em;
@@ -173,7 +175,6 @@
   
   /* ==========================================================================
      5. LAYOUT PRIMITIVES
-     Small reusable pieces. Real layout comes in Step 5.
      ========================================================================== */
   
   .container {
@@ -235,7 +236,467 @@
   
   
   /* ==========================================================================
-     7. REDUCED MOTION
+     7. HEADER & NAVIGATION
+     Flexbox: one row, logo on the left, links and toggle on the right.
+     ========================================================================== */
+  
+  .site-header {
+    position: sticky;                       /* stays visible while scrolling */
+    top: 0;
+    z-index: 50;                            /* sits above page content */
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    height: var(--header-height);
+  }
+  
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-base);
+    color: var(--ink);
+    text-decoration: none;
+    margin-right: auto;                     /* pushes everything else right */
+    white-space: nowrap;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: var(--space-6);
+  }
+  
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+  
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  
+  .theme-toggle:hover {
+    border-color: var(--ink);
+  }
+  
+  /* Hamburger button: hidden on desktop, styled and revealed in Step 6. */
+  .nav-toggle {
+    display: none;
+  }
+  
+  
+  /* ==========================================================================
+     8. HERO
+     ========================================================================== */
+  
+  .hero {
+    padding-block: var(--space-24) var(--space-16);
+  }
+  
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    margin-bottom: var(--space-6);
+  }
+  
+  /* The small dot before "Available for work" */
+  .hero-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  
+  .hero h1 {
+    margin-bottom: var(--space-2);
+  }
+  
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: var(--accent);
+    margin-bottom: var(--space-6);
+  }
+  
+  .hero-tagline {
+    font-size: var(--text-lg);
+    color: var(--ink-muted);
+    margin-bottom: var(--space-8);
+  }
+  
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+  
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+  
+  
+  /* ==========================================================================
+     9. STATS
+     Grid: three equal columns. They collapse to one on small screens (Step 6).
+     ========================================================================== */
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--line);
+  }
+  
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  
+  .stat-number {
+    font-size: var(--text-3xl);
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+  }
+  
+  .stat-label {
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+  }
+  
+  
+  /* ==========================================================================
+     10. CARDS (What I do)
+     ========================================================================== */
+  
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-6);
+  }
+  
+  .card h3 {
+    margin-bottom: var(--space-3);
+  }
+  
+  .card p {
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+    max-width: none;             /* cards are already narrow; 65ch would fight it */
+  }
+  
+  
+  /* ==========================================================================
+     11. TIMELINE (Experience)
+     A vertical rule with a marker per role. The order carries real
+     information here — it is a career sequence — so the device is earned.
+     ========================================================================== */
+  
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding-left: var(--space-8);
+    border-left: 1px solid var(--line);
+  }
+  
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0.5rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  
+  .timeline-date {
+    color: var(--ink-muted);
+    margin-bottom: var(--space-2);
+  }
+  
+  .timeline-company {
+    color: var(--ink-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+  }
+  
+  .timeline-item > ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .timeline-item > ul li {
+    position: relative;
+    padding-left: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+  }
+  
+  /* A custom bullet, since the reset removed the default one */
+  .timeline-item > ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  
+  
+  /* ==========================================================================
+     12. PROJECTS
+     ========================================================================== */
+  
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-6);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  
+  .project-type {
+    color: var(--accent);
+  }
+  
+  .project-card > p:not(.project-type):not(.project-links) {
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+    max-width: none;
+    margin-bottom: auto;          /* pushes the tags to the bottom of the card */
+  }
+  
+  .project-links {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+  
+  
+  /* ==========================================================================
+     13. TAGS (tech chips, shared by projects and skills)
+     ========================================================================== */
+  
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  
+  .tags li {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2px var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
+  
+  
+  /* ==========================================================================
+     14. SKILLS
+     Each group is a labelled row: label column, then the tags.
+     ========================================================================== */
+  
+  .skills-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  
+  .skill-group {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: var(--space-4);
+    align-items: start;
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--line);
+  }
+  
+  .skill-group:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .skill-group h3 {
+    color: var(--ink-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+  
+  
+  /* ==========================================================================
+     15. EDUCATION & CERTIFICATIONS
+     ========================================================================== */
+  
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+  }
+  
+  .two-col h3 {
+    margin-bottom: var(--space-4);
+  }
+  
+  .plain-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  
+  .plain-list li {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .plain-list strong {
+    font-size: var(--text-sm);
+  }
+  
+  .plain-list span {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
+  
+  
+  /* ==========================================================================
+     16. CONTACT FORM
+     ========================================================================== */
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 32rem;
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .field label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+  }
+  
+  .field input,
+  .field textarea {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    font-size: var(--text-sm);
+    resize: vertical;
+  }
+  
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--accent);
+  }
+  
+  .contact-form .btn {
+    align-self: flex-start;
+  }
+  
+  .form-status {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    min-height: 1.5rem;          /* reserves space so the layout doesn't jump */
+  }
+  
+  
+  /* ==========================================================================
+     17. FOOTER
+     ========================================================================== */
+  
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-block: var(--space-8);
+  }
+  
+  .site-footer .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+  
+  .site-footer p {
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+    max-width: none;
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: var(--space-4);
+  }
+  
+  
+  /* ==========================================================================
+     18. REDUCED MOTION
      Respect people who have asked their system for less animation.
      ========================================================================== */
   
