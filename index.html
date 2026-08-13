@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khadija — Full-Stack Developer</title>
+  <meta name="description" content="Full-stack developer building SaaS and ERP systems with Python and JavaScript.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <header class="site-header">
+    <nav class="nav container">
+      <a href="#hero" class="nav-logo">Khadija</a>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <button class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section id="hero" class="hero container">
+      <p class="hero-badge">Available for work</p>
+      <h1>Khadija</h1>
+      <p class="hero-title">Full-Stack Developer — Python &amp; JavaScript</p>
+      <p class="hero-tagline">
+        I build SaaS platforms end to end — Python backends, JavaScript
+        frontends, and the DevOps pipeline in between.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Get in touch</a>
+        <a href="#" class="btn btn-secondary">Download CV</a>
+      </div>
+
+      <ul class="hero-links">
+        <li><a href="https://github.com/YOUR-USERNAME">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/YOUR-PROFILE">LinkedIn</a></li>
+        <li><a href="mailto:your@email.com">Email</a></li>
+      </ul>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section class="stats container">
+      <div class="stat">
+        <span class="stat-number">3+</span>
+        <span class="stat-label">Years building production software</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">6</span>
+        <span class="stat-label">International clients served</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">2</span>
+        <span class="stat-label">SaaS platforms in production</span>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT / EXPERTISE ===== -->
+    <section id="about" class="section container">
+      <h2>What I do</h2>
+
+      <div class="cards">
+        <article class="card">
+          <h3>Backend &amp; APIs</h3>
+          <p>Placeholder — Python, business logic, ORM, PostgreSQL.</p>
+        </article>
+        <article class="card">
+          <h3>Frontend</h3>
+          <p>Placeholder — JavaScript, interfaces, consuming REST APIs.</p>
+        </article>
+        <article class="card">
+          <h3>DevOps &amp; Cloud</h3>
+          <p>Placeholder — CI/CD, Docker, deployment, reliability.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience" class="section container">
+      <h2>Experience</h2>
+
+      <ol class="timeline">
+        <li class="timeline-item">
+          <p class="timeline-date">2023 — Present</p>
+          <h3>Job Title</h3>
+          <p class="timeline-company">CraftSchoolship</p>
+          <ul>
+            <li>Placeholder achievement one.</li>
+            <li>Placeholder achievement two.</li>
+          </ul>
+        </li>
+        <li class="timeline-item">
+          <p class="timeline-date">2023 — 2024</p>
+          <h3>Previous Job Title</h3>
+          <p class="timeline-company">CraftSchoolship</p>
+          <ul>
+            <li>Placeholder achievement one.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <!-- In Step 9 this list gets rendered by JavaScript, and in
+         Step 11 the data will come from the FastAPI backend. -->
+    <section id="projects" class="section container">
+      <h2>Projects</h2>
+      <div class="projects-grid" id="projects-grid">
+        <p>Loading projects…</p>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills" class="section container">
+      <h2>Skills</h2>
+      <div class="skills-groups">
+        <div class="skill-group">
+          <h3>Languages</h3>
+          <ul class="tags"><li>Placeholder</li></ul>
+        </div>
+        <div class="skill-group">
+          <h3>Backend</h3>
+          <ul class="tags"><li>Placeholder</li></ul>
+        </div>
+        <div class="skill-group">
+          <h3>Frontend</h3>
+          <ul class="tags"><li>Placeholder</li></ul>
+        </div>
+        <div class="skill-group">
+          <h3>DevOps &amp; Cloud</h3>
+          <ul class="tags"><li>Placeholder</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <!-- The form has no action attribute: in Step 12 JavaScript will
+         intercept the submit and POST it to the FastAPI backend. -->
+    <section id="contact" class="section container">
+      <h2>Get in touch</h2>
+
+      <form class="contact-form" id="contact-form">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send message</button>
+        <p class="form-status" id="form-status"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p class="container">© 2026 Khadija — built from scratch with JavaScript and FastAPI.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
