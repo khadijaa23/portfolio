@@ -121,7 +121,7 @@
     font-weight: 700;
   }
   
-  h1 { font-size: var(--text-4xl); }
+  h1 { font-size: clamp(2rem, 8vw, 3rem); }
   h2 { font-size: var(--text-2xl); }
   h3 { font-size: var(--text-lg); }
   
@@ -709,5 +709,149 @@
     *::after {
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
+    }
+  }
+/* ==========================================================================
+   19. RESPONSIVE — TABLET AND BELOW (≤ 860px)
+   Multi-column grids collapse, and the nav becomes a dropdown panel.
+   ========================================================================== */
+
+   @media (max-width: 860px) {
+
+    /* --- Grids collapse to a single column --- */
+    .cards,
+    .projects-grid,
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Skill labels move above their tags instead of sitting beside them */
+    .skill-group {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+  
+    .two-col {
+      gap: var(--space-8);
+    }
+  
+    /* --- Hamburger button appears --- */
+    .nav-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0 6px;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      order: 3;                    /* sits after the theme toggle */
+    }
+  
+    /* The three bars inside the button */
+    .nav-toggle span {
+      display: block;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+  
+    /* When the menu is open, the bars become an X.
+       JavaScript adds the .is-open class in Step 7. */
+    .nav-toggle.is-open span:nth-child(1) {
+      transform: translateY(5.5px) rotate(45deg);
+    }
+    .nav-toggle.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle.is-open span:nth-child(3) {
+      transform: translateY(-5.5px) rotate(-45deg);
+    }
+  
+    /* --- Nav links become a dropdown panel --- */
+    .nav-links {
+      position: absolute;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: var(--space-2) var(--space-6) var(--space-4);
+  
+      /* Hidden by default, but still in the layout so it can animate.
+         visibility + opacity instead of display:none means the panel can
+         transition, and screen readers correctly skip it while hidden. */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+    }
+  
+    .nav-links.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  
+    .nav-links li {
+      border-bottom: 1px solid var(--line);
+    }
+  
+    .nav-links li:last-child {
+      border-bottom: none;
+    }
+  
+    .nav-links a {
+      display: block;               /* full-width tap target */
+      padding: var(--space-3) 0;
+    }
+  
+    .theme-toggle {
+      order: 2;
+    }
+  }
+  
+  
+  /* ==========================================================================
+     20. RESPONSIVE — PHONE (≤ 560px)
+     ========================================================================== */
+  
+  @media (max-width: 560px) {
+  
+    .stats {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  
+    .hero {
+      padding-block: var(--space-16) var(--space-12);
+    }
+  
+    .section {
+      padding-block: var(--space-12);
+    }
+  
+    .hero-actions .btn {
+      flex: 1;                      /* buttons share the row evenly */
+      text-align: center;
+    }
+  
+    .hero-links {
+      gap: var(--space-4);
+    }
+  
+    /* A long left indent wastes precious width on a phone */
+    .timeline-item {
+      padding-left: var(--space-6);
+    }
+  
+    .site-footer .container {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
