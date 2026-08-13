@@ -1,0 +1,252 @@
+/* ==========================================================================
+   1. DESIGN TOKENS
+   Every color, font and spacing value lives here as a CSS custom property.
+   Change a value once, and it updates everywhere it is used.
+   ========================================================================== */
+
+   :root {
+    /* --- Colors --- */
+    --paper:        #F6F7F9;   /* page background */
+    --surface:      #FFFFFF;   /* cards, raised areas */
+    --ink:          #14181F;   /* main text */
+    --ink-muted:    #5A616E;   /* secondary text */
+    --line:         #E1E5EA;   /* borders, dividers */
+    --accent:       #0F766E;   /* teal: links, buttons, highlights */
+    --accent-soft:  #E6F2F1;   /* accent background tint */
+  
+    /* --- Typography --- */
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  
+    /* A type scale: each step is proportionally larger than the last.
+       Using a scale instead of random sizes is what makes type feel ordered. */
+    --text-xs:   0.75rem;    /* 12px */
+    --text-sm:   0.875rem;   /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg:   1.125rem;   /* 18px */
+    --text-xl:   1.375rem;   /* 22px */
+    --text-2xl:  1.75rem;    /* 28px */
+    --text-3xl:  2.25rem;    /* 36px */
+    --text-4xl:  3rem;       /* 48px */
+  
+    /* --- Spacing --- */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-24: 6rem;
+  
+    /* --- Other --- */
+    --radius: 6px;
+    --max-width: 900px;
+  }
+  
+  /* Dark theme values. These override the tokens above when the <html> element
+     has data-theme="dark". The JavaScript toggle in Step 8 will set that
+     attribute, and the whole site will re-color itself with no other changes. */
+  html[data-theme="dark"] {
+    --paper:       #0F1216;
+    --surface:     #171B21;
+    --ink:         #E8EAED;
+    --ink-muted:   #9AA2AF;
+    --line:        #262C35;
+    --accent:      #2DD4BF;
+    --accent-soft: #16302E;
+  }
+  
+  
+  /* ==========================================================================
+     2. RESET
+     Browsers ship with their own default margins and sizing rules. A small
+     reset removes the surprises so your own CSS is the only thing in charge.
+     ========================================================================== */
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;   /* padding and border count inside the width */
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+  
+  button,
+  input,
+  textarea {
+    font: inherit;   /* form elements ignore your font by default */
+    color: inherit;
+  }
+  
+  ul, ol {
+    list-style: none;
+  }
+  
+  
+  /* ==========================================================================
+     3. BASE TYPOGRAPHY & PAGE
+     ========================================================================== */
+  
+  html {
+    scroll-behavior: smooth;      /* nav links glide instead of jumping */
+    scroll-padding-top: 5rem;     /* stops the sticky header covering headings */
+  }
+  
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.65;            /* generous line height = readable paragraphs */
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    line-height: 1.15;            /* headings need tighter leading than body text */
+    letter-spacing: -0.02em;      /* large type looks loose without this */
+    font-weight: 700;
+  }
+  
+  h1 { font-size: var(--text-4xl); }
+  h2 { font-size: var(--text-2xl); }
+  h3 { font-size: var(--text-lg); }
+  
+  p {
+    max-width: 65ch;              /* ~65 characters per line is the sweet spot */
+  }
+  
+  a {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+  
+  /* Visible keyboard focus. Never remove this without replacing it —
+     people navigating by keyboard rely on it to know where they are. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  
+  
+  /* ==========================================================================
+     4. THE MONOSPACE LAYER
+     Anything that is data rather than prose is set in monospace: dates,
+     numbers, labels, tech tags. This is the site's signature and it carries
+     real meaning, not just style.
+     ========================================================================== */
+  
+  .hero-badge,
+  .hero-links,
+  .stat-number,
+  .timeline-date,
+  .project-type,
+  .tags,
+  .footer-links {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: -0.01em;
+  }
+  
+  
+  /* ==========================================================================
+     5. LAYOUT PRIMITIVES
+     Small reusable pieces. Real layout comes in Step 5.
+     ========================================================================== */
+  
+  .container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;              /* centers the block horizontally */
+    padding-inline: var(--space-6);
+  }
+  
+  .section {
+    padding-block: var(--space-16);
+    border-top: 1px solid var(--line);
+  }
+  
+  .section > h2 {
+    margin-bottom: var(--space-8);
+  }
+  
+  .section-intro {
+    color: var(--ink-muted);
+    margin-bottom: var(--space-8);
+  }
+  
+  
+  /* ==========================================================================
+     6. BUTTONS
+     ========================================================================== */
+  
+  .btn {
+    display: inline-block;
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  
+  .btn-primary {
+    background: var(--accent);
+    color: var(--surface);
+  }
+  
+  .btn-primary:hover {
+    background: var(--ink);
+  }
+  
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line);
+  }
+  
+  .btn-secondary:hover {
+    border-color: var(--ink);
+  }
+  
+  
+  /* ==========================================================================
+     7. REDUCED MOTION
+     Respect people who have asked their system for less animation.
+     ========================================================================== */
+  
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
