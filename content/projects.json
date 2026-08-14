@@ -1,0 +1,35 @@
+[
+    {
+      "slug": "eduerp",
+      "title": "eduERP",
+      "kind": "Multi-tenant SaaS · at work",
+      "featured": true,
+      "description": "All-in-one platform for universities: ERP, LMS, CRM, HR, finance, billing and student records. In production with 2,000 students and 60 staff, built by a team of five.",
+      "role": "Full-stack development across the platform, plus the CI/CD pipeline.",
+      "tags": ["React 19", "TypeScript", "Node.js", "PostgreSQL", "Drizzle ORM", "Firebase"],
+      "repo_url": null,
+      "live_url": null
+    },
+    {
+      "slug": "odoo-erp",
+      "title": "Odoo ERP for six international clients",
+      "kind": "ERP customization · at work",
+      "featured": true,
+      "description": "Custom Python modules for universities and private schools — admissions, student records, grading, tuition fees and timetables — deployed on Kubernetes and maintained in production.",
+      "role": "Module development in Python, deployment on Kubernetes, production support.",
+      "tags": ["Python", "Odoo ORM", "PostgreSQL", "Docker", "Kubernetes"],
+      "repo_url": null,
+      "live_url": null
+    },
+    {
+      "slug": "portfolio",
+      "title": "This portfolio",
+      "kind": "Personal project",
+      "featured": true,
+      "description": "Built from scratch: no frontend framework, and a FastAPI backend serving the content files and handling the contact form.",
+      "role": "Everything — frontend, API, deployment.",
+      "tags": ["Python", "FastAPI", "JavaScript", "REST API", "SQLite"],
+      "repo_url": "https://github.com/khadijaa23/portfolio",
+      "live_url": "https://khadijaa23.github.io/portfolio/"
+    }
+  ]
