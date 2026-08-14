@@ -1,1077 +1,209 @@
 /* ==========================================================================
-   PORTFOLIO — style.css
-   Direction: deep violet ink on lilac-white paper. One bold element (the
-   aurora field behind the hero); everything else quiet and precise.
+   APPEND TO THE END OF style.css — BEFORE the two @media blocks.
+   Sections 22–27: multi-page styles and transitions.
    ========================================================================== */
 
 
 /* ==========================================================================
-   1. DESIGN TOKENS
+   22. PAGE TRANSITIONS
    ========================================================================== */
 
-   :root {
-    /* --- Violet palette --- */
-    --paper:        #FBFAFE;   /* lilac-white page background */
-    --paper-2:      #F4F1FC;   /* alternating band */
-    --surface:      #FFFFFF;   /* cards */
-    --ink:          #17111F;   /* deep aubergine, near-black */
-    --ink-muted:    #6B6280;   /* secondary text */
-    --line:         #E8E2F6;   /* borders */
-    --violet:       #7C3AED;   /* primary accent */
-    --violet-deep:  #5B21B6;   /* pressed / hover */
-    --lilac:        #C084FC;   /* secondary accent */
-    --violet-soft:  #F3EDFE;   /* tinted backgrounds */
-  
-    --gradient:      linear-gradient(135deg, #7C3AED 0%, #A855F7 45%, #C084FC 100%);
-    --gradient-text: linear-gradient(120deg, #2E1065 0%, #7C3AED 55%, #A855F7 100%);
-    --glow:          0 8px 32px -8px rgb(124 58 237 / 0.35);
-    --glow-strong:   0 16px 48px -12px rgb(124 58 237 / 0.45);
-  
-    /* --- Typography --- */
-    --font-display: 'Space Grotesk', system-ui, sans-serif;
-    --font-body:    'Inter', system-ui, sans-serif;
-    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
-  
-    --text-xs:   0.75rem;
-    --text-sm:   0.875rem;
-    --text-base: 1rem;
-    --text-lg:   1.125rem;
-    --text-xl:   1.375rem;
-    --text-2xl:  1.75rem;
-    --text-3xl:  2.25rem;
-    --text-4xl:  3rem;
-  
-    /* --- Spacing --- */
-    --space-1: 0.25rem;
-    --space-2: 0.5rem;
-    --space-3: 0.75rem;
-    --space-4: 1rem;
-    --space-6: 1.5rem;
-    --space-8: 2rem;
-    --space-12: 3rem;
-    --space-16: 4rem;
-    --space-24: 6rem;
-  
-    /* --- Other --- */
-    --radius:    10px;
-    --radius-lg: 16px;
-    --max-width: 940px;
-    --header-height: 4.25rem;
+   #app {
+    min-height: 60vh;
+    transition: opacity 0.12s ease;
   }
   
-  html[data-theme="dark"] {
-    --paper:        #0B0812;
-    --paper-2:      #120D1D;
-    --surface:      #16101F;
-    --ink:          #EFEAF8;
-    --ink-muted:    #A198B8;
-    --line:         #271E3B;
-    --violet:       #A78BFA;
-    --violet-deep:  #C4B5FD;
-    --lilac:        #D8B4FE;
-    --violet-soft:  #1D1530;
+  #app.is-leaving {
+    opacity: 0;
+  }
   
-    --gradient-text: linear-gradient(120deg, #E9D5FF 0%, #C4B5FD 50%, #A78BFA 100%);
-    --glow:        0 8px 32px -8px rgb(167 139 250 / 0.28);
-    --glow-strong: 0 16px 48px -12px rgb(167 139 250 / 0.38);
+  /* The View Transitions API animates the swap where the browser supports it.
+     Naming the element lets the browser cross-fade it rather than the page. */
+  @media (prefers-reduced-motion: no-preference) {
+    ::view-transition-old(root) {
+      animation: fade-out 0.18s ease both;
+    }
+    ::view-transition-new(root) {
+      animation: fade-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+  }
+  
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+  
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
   }
   
   
   /* ==========================================================================
-     2. RESET
+     23. PAGE HEADER
+     Every page except home opens the same way: a mono eyebrow naming the
+     section, the title, then one line of orientation.
      ========================================================================== */
   
-  *,
-  *::before,
-  *::after { box-sizing: border-box; }
-  
-  * { margin: 0; padding: 0; }
-  
-  img, svg { display: block; max-width: 100%; }
-  
-  button, input, textarea { font: inherit; color: inherit; }
-  
-  ul, ol { list-style: none; }
-  
-  
-  /* ==========================================================================
-     3. BASE
-     ========================================================================== */
-  
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+  .page {
+    padding-block: var(--space-16) var(--space-24);
   }
   
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--font-body);
-    font-size: var(--text-base);
-    line-height: 1.65;
-    overflow-x: clip;                    /* contains the aurora glow */
-    -webkit-font-smoothing: antialiased;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  .page-head {
+    margin-bottom: var(--space-16);
   }
   
-  h1, h2, h3 {
-    font-family: var(--font-display);
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-    font-weight: 700;
-  }
-  
-  h1 { font-size: clamp(2.25rem, 7vw, 3.5rem); }
-  h2 { font-size: var(--text-2xl); }
-  h3 { font-size: var(--text-lg); }
-  
-  p { max-width: 65ch; }
-  
-  a {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
     color: var(--violet);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: color 0.15s ease;
-  }
-  
-  a:hover { color: var(--violet-deep); }
-  
-  strong { font-weight: 600; }
-  
-  ::selection {
-    background: var(--violet);
-    color: #fff;
-  }
-  
-  :focus-visible {
-    outline: 2px solid var(--violet);
-    outline-offset: 3px;
-    border-radius: 3px;
-  }
-  
-  /* Slim violet scrollbar */
-  ::-webkit-scrollbar { width: 10px; }
-  ::-webkit-scrollbar-track { background: var(--paper); }
-  ::-webkit-scrollbar-thumb {
-    background: var(--line);
-    border-radius: 999px;
-    border: 3px solid var(--paper);
-  }
-  ::-webkit-scrollbar-thumb:hover { background: var(--lilac); }
-  
-  
-  /* ==========================================================================
-     4. MONOSPACE LAYER
-     Anything that is data rather than prose: dates, numbers, labels, tags.
-     ========================================================================== */
-  
-  .hero-badge,
-  .hero-links,
-  .timeline-date,
-  .project-type,
-  .tags,
-  .footer-links,
-  .skill-group h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: -0.01em;
-  }
-  
-  
-  /* ==========================================================================
-     5. LAYOUT PRIMITIVES
-     ========================================================================== */
-  
-  .container {
-    width: 100%;
-    max-width: var(--max-width);
-    margin-inline: auto;
-    padding-inline: var(--space-6);
-  }
-  
-  .section {
-    position: relative;
-    padding-block: var(--space-24);
-  }
-  
-  /* A hairline that fades out at both ends, instead of a hard rule */
-  .section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(100%, var(--max-width));
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
-  }
-  
-  .section > h2 {
-    position: relative;
-    margin-bottom: var(--space-12);
-    padding-bottom: var(--space-3);
-  }
-  
-  /* Short gradient underline under every section heading */
-  .section > h2::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 44px;
-    height: 3px;
-    border-radius: 999px;
-    background: var(--gradient);
-  }
-  
-  .section-intro {
-    color: var(--ink-muted);
-    margin-bottom: var(--space-8);
-    margin-top: calc(var(--space-8) * -1);
-  }
-  
-  
-  /* ==========================================================================
-     6. BUTTONS
-     ========================================================================== */
-  
-  .btn {
-    display: inline-block;
-    padding: var(--space-3) var(--space-6);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    text-decoration: none;
-    cursor: pointer;
-    transition: transform 0.18s ease, box-shadow 0.18s ease,
-                border-color 0.18s ease, background-color 0.18s ease;
-  }
-  
-  .btn-primary {
-    background: var(--gradient);
-    color: #fff;
-    box-shadow: var(--glow);
-  }
-  
-  .btn-primary:hover {
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: var(--glow-strong);
-  }
-  
-  .btn-secondary {
-    background: var(--surface);
-    color: var(--ink);
-    border-color: var(--line);
-  }
-  
-  .btn-secondary:hover {
-    color: var(--ink);
-    border-color: var(--lilac);
-    transform: translateY(-2px);
-  }
-  
-  .btn:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-    transform: none;
-  }
-  
-  
-  /* ==========================================================================
-     7. HEADER — glass
-     ========================================================================== */
-  
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: color-mix(in srgb, var(--paper) 72%, transparent);
-    backdrop-filter: blur(14px) saturate(160%);
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  }
-  
-  .site-header.is-scrolled {
-    border-bottom-color: var(--line);
-    box-shadow: 0 4px 24px -12px rgb(23 17 31 / 0.18);
-  }
-  
-  .nav {
-    display: flex;
-    align-items: center;
-    gap: var(--space-6);
-    height: var(--header-height);
-  }
-  
-  .nav-logo {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--text-base);
-    color: var(--ink);
-    text-decoration: none;
-    margin-right: auto;
-    white-space: nowrap;
-    letter-spacing: -0.02em;
-  }
-  
-  .nav-logo:hover { color: var(--violet); }
-  
-  .nav-links { display: flex; gap: var(--space-6); }
-  
-  .nav-links a {
-    position: relative;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--ink-muted);
-    text-decoration: none;
-    padding-block: var(--space-1);
-  }
-  
-  /* Gradient underline that grows from the left on hover and when active */
-  .nav-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 100%;
-    border-radius: 999px;
-    background: var(--gradient);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.22s ease;
-  }
-  
-  .nav-links a:hover,
-  .nav-links a.active { color: var(--ink); }
-  
-  .nav-links a:hover::after,
-  .nav-links a.active::after { transform: scaleX(1); }
-  
-  .theme-toggle {
-    display: grid;
-    place-items: center;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    width: 2.375rem;
-    height: 2.375rem;
-    font-size: var(--text-sm);
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: border-color 0.18s ease, transform 0.18s ease;
-  }
-  
-  .theme-toggle:hover {
-    border-color: var(--lilac);
-    transform: rotate(-12deg);
-  }
-  
-  .nav-toggle { display: none; }
-  
-  
-  /* ==========================================================================
-     8. HERO — the aurora
-     Two blurred violet ellipses drift slowly behind the text. This is the
-     one bold element on the page; everything else stays restrained.
-     ========================================================================== */
-  
-  .hero {
-    position: relative;
-    padding-block: var(--space-24) var(--space-16);
-  }
-  
-  .hero::before,
-  .hero::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    border-radius: 50%;
-    filter: blur(90px);
-    pointer-events: none;
-  }
-  
-  .hero::before {
-    width: 46rem;
-    height: 30rem;
-    top: -12rem;
-    left: -14rem;
-    background: radial-gradient(circle, rgb(167 139 250 / 0.55), transparent 68%);
-    animation: drift-a 22s ease-in-out infinite alternate;
-  }
-  
-  .hero::after {
-    width: 34rem;
-    height: 26rem;
-    top: -6rem;
-    right: -12rem;
-    background: radial-gradient(circle, rgb(232 180 253 / 0.45), transparent 68%);
-    animation: drift-b 26s ease-in-out infinite alternate;
-  }
-  
-  html[data-theme="dark"] .hero::before {
-    background: radial-gradient(circle, rgb(124 58 237 / 0.5), transparent 68%);
-  }
-  
-  html[data-theme="dark"] .hero::after {
-    background: radial-gradient(circle, rgb(192 132 252 / 0.32), transparent 68%);
-  }
-  
-  @keyframes drift-a {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(3rem, 2rem, 0) scale(1.12); }
-  }
-  
-  @keyframes drift-b {
-    from { transform: translate3d(0, 0, 0) scale(1.08); }
-    to   { transform: translate3d(-2.5rem, 1.5rem, 0) scale(1); }
-  }
-  
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    color: var(--violet);
-    padding: var(--space-1) var(--space-4);
-    border-radius: 999px;
-    margin-bottom: var(--space-8);
-    box-shadow: 0 2px 10px -4px rgb(124 58 237 / 0.25);
-  }
-  
-  /* Pulsing availability dot */
-  .hero-badge::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
-    box-shadow: 0 0 0 0 currentColor;
-    animation: pulse 2.4s ease-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgb(124 58 237 / 0.55); }
-    70%  { box-shadow: 0 0 0 8px rgb(124 58 237 / 0); }
-    100% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0); }
-  }
-  
-  /* Gradient name — the page's signature typographic moment */
-  .hero h1 {
     margin-bottom: var(--space-3);
+  }
+  
+  .page-head h1 {
+    margin-bottom: var(--space-4);
     background: var(--gradient-text);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: var(--space-6);
-  }
-  
-  .hero-tagline {
+  .page-intro {
     font-size: var(--text-lg);
     color: var(--ink-muted);
+    max-width: 58ch;
+  }
+  
+  /* Sections inside a page, below the page header */
+  .section-block {
+    margin-bottom: var(--space-16);
+  }
+  
+  .section-block:last-child {
+    margin-bottom: 0;
+  }
+  
+  .section-block h2 {
     margin-bottom: var(--space-8);
-    max-width: 54ch;
-  }
-  
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-bottom: var(--space-8);
-  }
-  
-  .hero-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-6);
-  }
-  
-  .hero-links a {
-    color: var(--ink-muted);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 2px;
-  }
-  
-  .hero-links a:hover {
-    color: var(--violet);
-    border-bottom-color: var(--lilac);
   }
   
   
   /* ==========================================================================
-     9. STATS
+     24. BACK LINK
      ========================================================================== */
   
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
-    padding-block: var(--space-8);
-  }
-  
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-6);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-  
-  .stat:hover {
-    transform: translateY(-3px);
-    border-color: transparent;
-    box-shadow: var(--glow);
-  }
-  
-  .stat-number {
-    font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  
-  .stat-label {
-    font-size: var(--text-sm);
-    color: var(--ink-muted);
-  }
-  
-  
-  /* ==========================================================================
-     10. CARDS (What I do)
-     ========================================================================== */
-  
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
-  }
-  
-  .card {
-    position: relative;
-    overflow: hidden;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: var(--space-8) var(--space-6);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-  
-  /* Gradient edge that wipes in on hover */
-  .card::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 3px;
-    background: var(--gradient);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: transparent;
-    box-shadow: var(--glow);
-  }
-  
-  .card:hover::before { transform: scaleX(1); }
-  
-  .card h3 { margin-bottom: var(--space-3); }
-  
-  .card p {
-    font-size: var(--text-sm);
-    color: var(--ink-muted);
-    max-width: none;
-  }
-  
-  
-  /* ==========================================================================
-     11. TIMELINE (Experience)
-     The rule is a gradient that fades out at the bottom, so the sequence
-     reads as ongoing rather than terminated.
-     ========================================================================== */
-  
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-  }
-  
-  .timeline-item {
-    position: relative;
-    padding-left: var(--space-8);
-  }
-  
-  .timeline-item::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.35rem;
-    bottom: -3rem;
-    width: 2px;
-    background: linear-gradient(180deg, var(--lilac), var(--line));
-  }
-  
-  .timeline-item:last-child::after { bottom: 0; }
-  
-  .timeline-item::before {
-    content: "";
-    position: absolute;
-    left: -4px;
-    top: 0.35rem;
-    z-index: 1;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--gradient);
-    box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px var(--line);
-  }
-  
-  .timeline-date {
-    color: var(--violet);
-    margin-bottom: var(--space-2);
-  }
-  
-  .timeline-company {
-    color: var(--ink-muted);
-    font-size: var(--text-sm);
-    margin-bottom: var(--space-4);
-  }
-  
-  .timeline-item > ul {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-  
-  .timeline-item > ul li {
-    position: relative;
-    padding-left: var(--space-4);
-    font-size: var(--text-sm);
-    color: var(--ink-muted);
-  }
-  
-  .timeline-item > ul li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.75em;
-    width: 6px;
-    height: 1px;
-    background: var(--lilac);
-  }
-  
-  
-  /* ==========================================================================
-     12. PROJECTS
-     ========================================================================== */
-  
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-4);
-  }
-  
-  .project-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: var(--space-8) var(--space-6);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-  
-  .project-card:hover {
-    transform: translateY(-4px);
-    border-color: transparent;
-    box-shadow: var(--glow);
-  }
-  
-  .project-type { color: var(--violet); }
-  
-  .project-card > p:not(.project-type):not(.project-links) {
-    font-size: var(--text-sm);
-    color: var(--ink-muted);
-    max-width: none;
-    margin-bottom: auto;
-  }
-  
-  .project-links {
+  .back-link {
+    display: inline-block;
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-  }
-  
-  .project-links a { text-decoration: none; }
-  
-  .project-links a::after {
-    content: " →";
-    transition: opacity 0.2s ease;
-  }
-  
-  .project-card:hover .project-links a { color: var(--violet-deep); }
-  
-  
-  /* ==========================================================================
-     13. TAGS
-     ========================================================================== */
-  
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-  
-  .tags li {
-    background: var(--violet-soft);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    padding: 3px var(--space-3);
-    font-size: var(--text-xs);
-    color: var(--violet);
-    transition: border-color 0.15s ease;
-  }
-  
-  .tags li:hover { border-color: var(--lilac); }
-  
-  
-  /* ==========================================================================
-     14. SKILLS
-     ========================================================================== */
-  
-  .skills-groups {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
-  
-  .skill-group {
-    display: grid;
-    grid-template-columns: 9rem 1fr;
-    gap: var(--space-6);
-    align-items: start;
-    padding-bottom: var(--space-6);
-    border-bottom: 1px solid var(--line);
-  }
-  
-  .skill-group:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  
-  .skill-group h3 {
     color: var(--ink-muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding-top: 3px;
+    text-decoration: none;
+    margin-bottom: var(--space-8);
+  }
+  
+  .back-link::before {
+    content: "← ";
+  }
+  
+  .back-link:hover {
+    color: var(--violet);
   }
   
   
   /* ==========================================================================
-     15. EDUCATION & CERTIFICATIONS
+     25. PROJECT CARDS AS LINKS
+     The whole card is now an <a>, so the styles need to strip link defaults.
      ========================================================================== */
   
-  .two-col {
+  a.project-card {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  a.project-card h3 {
+    transition: color 0.18s ease;
+  }
+  
+  a.project-card:hover h3 {
+    color: var(--violet);
+  }
+  
+  .project-links span {
+    color: var(--violet);
+  }
+  
+  /* Detail page: role and stack side by side */
+  .detail-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-12);
+    margin-bottom: var(--space-12);
   }
   
-  .two-col h3 { margin-bottom: var(--space-6); }
-  
-  .plain-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+  .detail-grid h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
   }
   
-  .plain-list li {
-    display: flex;
-    flex-direction: column;
-    padding-left: var(--space-4);
-    border-left: 2px solid var(--line);
-    transition: border-color 0.18s ease;
-  }
-  
-  .plain-list li:hover { border-left-color: var(--lilac); }
-  
-  .plain-list strong { font-size: var(--text-sm); }
-  
-  .plain-list span {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
+  .detail-grid p {
     color: var(--ink-muted);
+    font-size: var(--text-sm);
+  }
+  
+  .note {
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+    margin-top: var(--space-8);
   }
   
   
   /* ==========================================================================
-     16. CONTACT FORM
+     26. HOME PAGE ADJUSTMENTS
      ========================================================================== */
   
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    max-width: 34rem;
-    padding: var(--space-8);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
+  .cta {
+    text-align: left;
   }
   
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+  .cta .section-intro {
+    margin-top: 0;
   }
   
-  .field label {
+  .loading-state {
+    padding-block: var(--space-24);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     color: var(--ink-muted);
   }
   
-  .field input,
-  .field textarea {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    font-size: var(--text-sm);
-    resize: vertical;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  
+  /* ==========================================================================
+     27. FORM STATUS COLORS
+     ========================================================================== */
+  
+  .form-status.is-success {
+    color: var(--violet);
   }
   
-  .field input:focus,
-  .field textarea:focus {
-    outline: none;
-    border-color: var(--violet);
-    box-shadow: 0 0 0 3px rgb(124 58 237 / 0.14);
+  .form-status.is-error {
+    color: #DC2626;
   }
   
-  .contact-form .btn { align-self: flex-start; }
-  
-  .form-status {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    min-height: 1.5rem;
+  html[data-theme="dark"] .form-status.is-error {
+    color: #F87171;
   }
   
   
   /* ==========================================================================
-     17. FOOTER
+     28. RESPONSIVE ADDITIONS
+     Add these rules INSIDE the existing @media (max-width: 880px) block.
      ========================================================================== */
   
-  .site-footer {
-    border-top: 1px solid var(--line);
-    padding-block: var(--space-8);
-    background: var(--paper-2);
-  }
-  
-  .site-footer .container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-  }
-  
-  .site-footer p {
-    font-size: var(--text-sm);
-    color: var(--ink-muted);
-    max-width: none;
-  }
-  
-  .footer-links { display: flex; gap: var(--space-4); }
-  
-  .footer-links a {
-    color: var(--ink-muted);
-    text-decoration: none;
-  }
-  
-  .footer-links a:hover { color: var(--violet); }
-  
-  
-  /* ==========================================================================
-     18. SCROLL REVEAL
-     JavaScript adds data-reveal to section children, then .is-visible when
-     they enter the viewport. The stagger delay is set inline by the script.
-     ========================================================================== */
-  
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  
-  [data-reveal].is-visible {
-    opacity: 1;
-    transform: none;
-  }
-  
-  
-  /* ==========================================================================
-     19. RESPONSIVE — ≤ 880px
-     ========================================================================== */
-  
+  /*
   @media (max-width: 880px) {
-  
-    .cards,
-    .projects-grid,
-    .two-col {
-      grid-template-columns: 1fr;
-    }
-  
-    .skill-group {
-      grid-template-columns: 1fr;
-      gap: var(--space-3);
-    }
-  
-    .two-col { gap: var(--space-8); }
-  
-    .section { padding-block: var(--space-16); }
-  
-    .nav-toggle {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
-      width: 2.375rem;
-      height: 2.375rem;
-      padding: 0 7px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      cursor: pointer;
-      order: 3;
-    }
-  
-    .nav-toggle span {
-      display: block;
-      height: 1.5px;
-      border-radius: 999px;
-      background: var(--ink);
-      transition: transform 0.22s ease, opacity 0.22s ease;
-    }
-  
-    .nav-toggle.is-open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
-  
-    .nav-links {
-      position: absolute;
-      top: var(--header-height);
-      left: 0;
-      right: 0;
-      flex-direction: column;
-      gap: 0;
-      background: color-mix(in srgb, var(--surface) 96%, transparent);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line);
-      padding: var(--space-2) var(--space-6) var(--space-4);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
-    }
-  
-    .nav-links.is-open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-  
-    .nav-links li { border-bottom: 1px solid var(--line); }
-    .nav-links li:last-child { border-bottom: none; }
-  
-    .nav-links a {
-      display: block;
-      padding: var(--space-3) 0;
-    }
-  
-    .nav-links a::after { display: none; }
-  
-    .theme-toggle { order: 2; }
+    .detail-grid { grid-template-columns: 1fr; gap: var(--space-8); }
+    .page { padding-block: var(--space-12) var(--space-16); }
+    .page-head { margin-bottom: var(--space-12); }
   }
-  
-  
-  /* ==========================================================================
-     20. RESPONSIVE — ≤ 560px
-     ========================================================================== */
-  
-  @media (max-width: 560px) {
-  
-    .stats {
-      grid-template-columns: 1fr;
-      gap: var(--space-3);
-    }
-  
-    .hero { padding-block: var(--space-16) var(--space-12); }
-  
-    .hero::before,
-    .hero::after { filter: blur(70px); }
-  
-    .hero-actions .btn {
-      flex: 1;
-      text-align: center;
-    }
-  
-    .hero-links { gap: var(--space-4); }
-  
-    .contact-form { padding: var(--space-6) var(--space-4); }
-  
-    .site-footer .container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-  
-  
-  /* ==========================================================================
-     21. REDUCED MOTION
-     ========================================================================== */
-  
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-  
-    .hero::before,
-    .hero::after,
-    .hero-badge::before { animation: none; }
-  
-    [data-reveal] {
-      opacity: 1;
-      transform: none;
-    }
-  
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+  */
