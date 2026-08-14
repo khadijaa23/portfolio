@@ -1,34 +1,45 @@
 /* ==========================================================================
+   PORTFOLIO — style.css
+   Direction: deep violet ink on lilac-white paper. One bold element (the
+   aurora field behind the hero); everything else quiet and precise.
+   ========================================================================== */
+
+
+/* ==========================================================================
    1. DESIGN TOKENS
-   Every color, font and spacing value lives here as a CSS custom property.
-   Change a value once, and it updates everywhere it is used.
    ========================================================================== */
 
    :root {
-    /* --- Colors --- */
-    --paper:        #F6F7F9;   /* page background */
-    --surface:      #FFFFFF;   /* cards, raised areas */
-    --ink:          #14181F;   /* main text */
-    --ink-muted:    #5A616E;   /* secondary text */
-    --line:         #E1E5EA;   /* borders, dividers */
-    --accent:       #0F766E;   /* teal: links, buttons, highlights */
-    --accent-soft:  #E6F2F1;   /* accent background tint */
+    /* --- Violet palette --- */
+    --paper:        #FBFAFE;   /* lilac-white page background */
+    --paper-2:      #F4F1FC;   /* alternating band */
+    --surface:      #FFFFFF;   /* cards */
+    --ink:          #17111F;   /* deep aubergine, near-black */
+    --ink-muted:    #6B6280;   /* secondary text */
+    --line:         #E8E2F6;   /* borders */
+    --violet:       #7C3AED;   /* primary accent */
+    --violet-deep:  #5B21B6;   /* pressed / hover */
+    --lilac:        #C084FC;   /* secondary accent */
+    --violet-soft:  #F3EDFE;   /* tinted backgrounds */
+  
+    --gradient:      linear-gradient(135deg, #7C3AED 0%, #A855F7 45%, #C084FC 100%);
+    --gradient-text: linear-gradient(120deg, #2E1065 0%, #7C3AED 55%, #A855F7 100%);
+    --glow:          0 8px 32px -8px rgb(124 58 237 / 0.35);
+    --glow-strong:   0 16px 48px -12px rgb(124 58 237 / 0.45);
   
     /* --- Typography --- */
     --font-display: 'Space Grotesk', system-ui, sans-serif;
     --font-body:    'Inter', system-ui, sans-serif;
     --font-mono:    'JetBrains Mono', ui-monospace, monospace;
   
-    /* A type scale: each step is proportionally larger than the last.
-       Using a scale instead of random sizes is what makes type feel ordered. */
-    --text-xs:   0.75rem;    /* 12px */
-    --text-sm:   0.875rem;   /* 14px */
-    --text-base: 1rem;       /* 16px */
-    --text-lg:   1.125rem;   /* 18px */
-    --text-xl:   1.375rem;   /* 22px */
-    --text-2xl:  1.75rem;    /* 28px */
-    --text-3xl:  2.25rem;    /* 36px */
-    --text-4xl:  3rem;       /* 48px */
+    --text-xs:   0.75rem;
+    --text-sm:   0.875rem;
+    --text-base: 1rem;
+    --text-lg:   1.125rem;
+    --text-xl:   1.375rem;
+    --text-2xl:  1.75rem;
+    --text-3xl:  2.25rem;
+    --text-4xl:  3rem;
   
     /* --- Spacing --- */
     --space-1: 0.25rem;
@@ -42,67 +53,54 @@
     --space-24: 6rem;
   
     /* --- Other --- */
-    --radius: 6px;
-    --max-width: 900px;
-    --header-height: 4rem;
+    --radius:    10px;
+    --radius-lg: 16px;
+    --max-width: 940px;
+    --header-height: 4.25rem;
   }
   
-  /* Dark theme values. These override the tokens above when the <html> element
-     has data-theme="dark". The JavaScript toggle in Step 8 will set that
-     attribute, and the whole site will re-color itself with no other changes. */
   html[data-theme="dark"] {
-    --paper:       #0F1216;
-    --surface:     #171B21;
-    --ink:         #E8EAED;
-    --ink-muted:   #9AA2AF;
-    --line:        #262C35;
-    --accent:      #2DD4BF;
-    --accent-soft: #16302E;
+    --paper:        #0B0812;
+    --paper-2:      #120D1D;
+    --surface:      #16101F;
+    --ink:          #EFEAF8;
+    --ink-muted:    #A198B8;
+    --line:         #271E3B;
+    --violet:       #A78BFA;
+    --violet-deep:  #C4B5FD;
+    --lilac:        #D8B4FE;
+    --violet-soft:  #1D1530;
+  
+    --gradient-text: linear-gradient(120deg, #E9D5FF 0%, #C4B5FD 50%, #A78BFA 100%);
+    --glow:        0 8px 32px -8px rgb(167 139 250 / 0.28);
+    --glow-strong: 0 16px 48px -12px rgb(167 139 250 / 0.38);
   }
   
   
   /* ==========================================================================
      2. RESET
-     Browsers ship with their own default margins and sizing rules. A small
-     reset removes the surprises so your own CSS is the only thing in charge.
      ========================================================================== */
   
   *,
   *::before,
-  *::after {
-    box-sizing: border-box;   /* padding and border count inside the width */
-  }
+  *::after { box-sizing: border-box; }
   
-  * {
-    margin: 0;
-    padding: 0;
-  }
+  * { margin: 0; padding: 0; }
   
-  img,
-  svg {
-    display: block;
-    max-width: 100%;
-  }
+  img, svg { display: block; max-width: 100%; }
   
-  button,
-  input,
-  textarea {
-    font: inherit;   /* form elements ignore your font by default */
-    color: inherit;
-  }
+  button, input, textarea { font: inherit; color: inherit; }
   
-  ul, ol {
-    list-style: none;
-  }
+  ul, ol { list-style: none; }
   
   
   /* ==========================================================================
-     3. BASE TYPOGRAPHY & PAGE
+     3. BASE
      ========================================================================== */
   
   html {
-    scroll-behavior: smooth;      /* nav links glide instead of jumping */
-    scroll-padding-top: 5rem;     /* stops the sticky header covering headings */
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
   
   body {
@@ -110,58 +108,65 @@
     color: var(--ink);
     font-family: var(--font-body);
     font-size: var(--text-base);
-    line-height: 1.65;            /* generous line height = readable paragraphs */
+    line-height: 1.65;
+    overflow-x: clip;                    /* contains the aurora glow */
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   h1, h2, h3 {
     font-family: var(--font-display);
-    line-height: 1.15;            /* headings need tighter leading than body text */
-    letter-spacing: -0.02em;      /* large type looks loose without this */
+    line-height: 1.12;
+    letter-spacing: -0.03em;
     font-weight: 700;
   }
   
-  h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  h1 { font-size: clamp(2.25rem, 7vw, 3.5rem); }
   h2 { font-size: var(--text-2xl); }
   h3 { font-size: var(--text-lg); }
   
-  p {
-    max-width: 65ch;              /* ~65 characters per line is the sweet spot */
-  }
+  p { max-width: 65ch; }
   
   a {
-    color: var(--accent);
+    color: var(--violet);
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
+    transition: color 0.15s ease;
   }
   
-  a:hover {
-    text-decoration: none;
+  a:hover { color: var(--violet-deep); }
+  
+  strong { font-weight: 600; }
+  
+  ::selection {
+    background: var(--violet);
+    color: #fff;
   }
   
-  strong {
-    font-weight: 600;
-  }
-  
-  /* Visible keyboard focus. Never remove this without replacing it —
-     people navigating by keyboard rely on it to know where they are. */
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--violet);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
+  
+  /* Slim violet scrollbar */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 999px;
+    border: 3px solid var(--paper);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--lilac); }
   
   
   /* ==========================================================================
-     4. THE MONOSPACE LAYER
-     Anything that is data rather than prose is set in monospace: dates,
-     numbers, labels, tech tags. This is the site's signature and it carries
-     real meaning, not just style.
+     4. MONOSPACE LAYER
+     Anything that is data rather than prose: dates, numbers, labels, tags.
      ========================================================================== */
   
   .hero-badge,
   .hero-links,
-  .stat-number,
   .timeline-date,
   .project-type,
   .tags,
@@ -180,22 +185,49 @@
   .container {
     width: 100%;
     max-width: var(--max-width);
-    margin-inline: auto;              /* centers the block horizontally */
+    margin-inline: auto;
     padding-inline: var(--space-6);
   }
   
   .section {
-    padding-block: var(--space-16);
-    border-top: 1px solid var(--line);
+    position: relative;
+    padding-block: var(--space-24);
+  }
+  
+  /* A hairline that fades out at both ends, instead of a hard rule */
+  .section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, var(--max-width));
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
   }
   
   .section > h2 {
-    margin-bottom: var(--space-8);
+    position: relative;
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-3);
+  }
+  
+  /* Short gradient underline under every section heading */
+  .section > h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 44px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--gradient);
   }
   
   .section-intro {
     color: var(--ink-muted);
     margin-bottom: var(--space-8);
+    margin-top: calc(var(--space-8) * -1);
   }
   
   
@@ -207,45 +239,64 @@
     display: inline-block;
     padding: var(--space-3) var(--space-6);
     border: 1px solid transparent;
-    border-radius: var(--radius);
+    border-radius: 999px;
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition: transform 0.18s ease, box-shadow 0.18s ease,
+                border-color 0.18s ease, background-color 0.18s ease;
   }
   
   .btn-primary {
-    background: var(--accent);
-    color: var(--surface);
+    background: var(--gradient);
+    color: #fff;
+    box-shadow: var(--glow);
   }
   
   .btn-primary:hover {
-    background: var(--ink);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: var(--glow-strong);
   }
   
   .btn-secondary {
-    background: transparent;
+    background: var(--surface);
     color: var(--ink);
     border-color: var(--line);
   }
   
   .btn-secondary:hover {
-    border-color: var(--ink);
+    color: var(--ink);
+    border-color: var(--lilac);
+    transform: translateY(-2px);
+  }
+  
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
   }
   
   
   /* ==========================================================================
-     7. HEADER & NAVIGATION
-     Flexbox: one row, logo on the left, links and toggle on the right.
+     7. HEADER — glass
      ========================================================================== */
   
   .site-header {
-    position: sticky;                       /* stays visible while scrolling */
+    position: sticky;
     top: 0;
-    z-index: 50;                            /* sits above page content */
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .site-header.is-scrolled {
+    border-bottom-color: var(--line);
+    box-shadow: 0 4px 24px -12px rgb(23 17 31 / 0.18);
   }
   
   .nav {
@@ -261,90 +312,168 @@
     font-size: var(--text-base);
     color: var(--ink);
     text-decoration: none;
-    margin-right: auto;                     /* pushes everything else right */
+    margin-right: auto;
     white-space: nowrap;
+    letter-spacing: -0.02em;
   }
   
-  .nav-links {
-    display: flex;
-    gap: var(--space-6);
-  }
+  .nav-logo:hover { color: var(--violet); }
+  
+  .nav-links { display: flex; gap: var(--space-6); }
   
   .nav-links a {
+    position: relative;
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     color: var(--ink-muted);
     text-decoration: none;
-    transition: color 0.15s ease;
+    padding-block: var(--space-1);
   }
   
-  .nav-links a:hover {
-    color: var(--accent);
+  /* Gradient underline that grows from the left on hover and when active */
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 999px;
+    background: var(--gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.22s ease;
   }
+  
+  .nav-links a:hover,
+  .nav-links a.active { color: var(--ink); }
+  
+  .nav-links a:hover::after,
+  .nav-links a.active::after { transform: scaleX(1); }
   
   .theme-toggle {
-    background: none;
+    display: grid;
+    place-items: center;
+    background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    width: 2.25rem;
-    height: 2.25rem;
+    border-radius: 999px;
+    width: 2.375rem;
+    height: 2.375rem;
     font-size: var(--text-sm);
     cursor: pointer;
     flex-shrink: 0;
+    transition: border-color 0.18s ease, transform 0.18s ease;
   }
   
   .theme-toggle:hover {
-    border-color: var(--ink);
+    border-color: var(--lilac);
+    transform: rotate(-12deg);
   }
   
-  /* Hamburger button: hidden on desktop, styled and revealed in Step 6. */
-  .nav-toggle {
-    display: none;
-  }
-
-  .site-header.is-scrolled {
-    box-shadow: 0 1px 12px rgb(0 0 0 / 0.06);
-  }
-
-  .nav-links a.active {
-    color: var(--accent);
-  }
+  .nav-toggle { display: none; }
+  
+  
   /* ==========================================================================
-     8. HERO
+     8. HERO — the aurora
+     Two blurred violet ellipses drift slowly behind the text. This is the
+     one bold element on the page; everything else stays restrained.
      ========================================================================== */
   
   .hero {
+    position: relative;
     padding-block: var(--space-24) var(--space-16);
+  }
+  
+  .hero::before,
+  .hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  
+  .hero::before {
+    width: 46rem;
+    height: 30rem;
+    top: -12rem;
+    left: -14rem;
+    background: radial-gradient(circle, rgb(167 139 250 / 0.55), transparent 68%);
+    animation: drift-a 22s ease-in-out infinite alternate;
+  }
+  
+  .hero::after {
+    width: 34rem;
+    height: 26rem;
+    top: -6rem;
+    right: -12rem;
+    background: radial-gradient(circle, rgb(232 180 253 / 0.45), transparent 68%);
+    animation: drift-b 26s ease-in-out infinite alternate;
+  }
+  
+  html[data-theme="dark"] .hero::before {
+    background: radial-gradient(circle, rgb(124 58 237 / 0.5), transparent 68%);
+  }
+  
+  html[data-theme="dark"] .hero::after {
+    background: radial-gradient(circle, rgb(192 132 252 / 0.32), transparent 68%);
+  }
+  
+  @keyframes drift-a {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(3rem, 2rem, 0) scale(1.12); }
+  }
+  
+  @keyframes drift-b {
+    from { transform: translate3d(0, 0, 0) scale(1.08); }
+    to   { transform: translate3d(-2.5rem, 1.5rem, 0) scale(1); }
   }
   
   .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    background: var(--accent-soft);
-    color: var(--accent);
-    padding: var(--space-1) var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--violet);
+    padding: var(--space-1) var(--space-4);
     border-radius: 999px;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-8);
+    box-shadow: 0 2px 10px -4px rgb(124 58 237 / 0.25);
   }
   
-  /* The small dot before "Available for work" */
+  /* Pulsing availability dot */
   .hero-badge::before {
     content: "";
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: currentColor;
+    box-shadow: 0 0 0 0 currentColor;
+    animation: pulse 2.4s ease-out infinite;
   }
   
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgb(124 58 237 / 0.55); }
+    70%  { box-shadow: 0 0 0 8px rgb(124 58 237 / 0); }
+    100% { box-shadow: 0 0 0 0 rgb(124 58 237 / 0); }
+  }
+  
+  /* Gradient name — the page's signature typographic moment */
   .hero h1 {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   
   .hero-title {
     font-family: var(--font-display);
     font-size: var(--text-xl);
-    color: var(--accent);
+    font-weight: 500;
+    color: var(--ink);
     margin-bottom: var(--space-6);
   }
   
@@ -352,6 +481,7 @@
     font-size: var(--text-lg);
     color: var(--ink-muted);
     margin-bottom: var(--space-8);
+    max-width: 54ch;
   }
   
   .hero-actions {
@@ -367,31 +497,57 @@
     gap: var(--space-6);
   }
   
+  .hero-links a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  
+  .hero-links a:hover {
+    color: var(--violet);
+    border-bottom-color: var(--lilac);
+  }
+  
   
   /* ==========================================================================
      9. STATS
-     Grid: three equal columns. They collapse to one on small screens (Step 6).
      ========================================================================== */
   
   .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-8);
+    gap: var(--space-4);
     padding-block: var(--space-8);
-    border-block: 1px solid var(--line);
   }
   
   .stat {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .stat:hover {
+    transform: translateY(-3px);
+    border-color: transparent;
+    box-shadow: var(--glow);
   }
   
   .stat-number {
+    font-family: var(--font-display);
     font-size: var(--text-3xl);
-    font-weight: 500;
-    color: var(--accent);
+    font-weight: 700;
     line-height: 1;
+    letter-spacing: -0.03em;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   
   .stat-label {
@@ -411,27 +567,48 @@
   }
   
   .card {
+    position: relative;
+    overflow: hidden;
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8) var(--space-6);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
   
-  .card h3 {
-    margin-bottom: var(--space-3);
+  /* Gradient edge that wipes in on hover */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
   }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: var(--glow);
+  }
+  
+  .card:hover::before { transform: scaleX(1); }
+  
+  .card h3 { margin-bottom: var(--space-3); }
   
   .card p {
     font-size: var(--text-sm);
     color: var(--ink-muted);
-    max-width: none;             /* cards are already narrow; 65ch would fight it */
+    max-width: none;
   }
   
   
   /* ==========================================================================
      11. TIMELINE (Experience)
-     A vertical rule with a marker per role. The order carries real
-     information here — it is a career sequence — so the device is earned.
+     The rule is a gradient that fades out at the bottom, so the sequence
+     reads as ongoing rather than terminated.
      ========================================================================== */
   
   .timeline {
@@ -443,22 +620,35 @@
   .timeline-item {
     position: relative;
     padding-left: var(--space-8);
-    border-left: 1px solid var(--line);
   }
+  
+  .timeline-item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.35rem;
+    bottom: -3rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--lilac), var(--line));
+  }
+  
+  .timeline-item:last-child::after { bottom: 0; }
   
   .timeline-item::before {
     content: "";
     position: absolute;
-    left: -5px;
-    top: 0.5rem;
-    width: 9px;
-    height: 9px;
+    left: -4px;
+    top: 0.35rem;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--gradient);
+    box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px var(--line);
   }
   
   .timeline-date {
-    color: var(--ink-muted);
+    color: var(--violet);
     margin-bottom: var(--space-2);
   }
   
@@ -481,12 +671,14 @@
     color: var(--ink-muted);
   }
   
-  /* A custom bullet, since the reset removed the default one */
   .timeline-item > ul li::before {
-    content: "—";
+    content: "";
     position: absolute;
     left: 0;
-    color: var(--accent);
+    top: 0.75em;
+    width: 6px;
+    height: 1px;
+    background: var(--lilac);
   }
   
   
@@ -501,30 +693,30 @@
   }
   
   .project-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: var(--space-6);
-    transition: border-color 0.15s ease, transform 0.15s ease;
+    border-radius: var(--radius-lg);
+    padding: var(--space-8) var(--space-6);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
   
   .project-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: var(--glow);
   }
   
-  .project-type {
-    color: var(--accent);
-  }
+  .project-type { color: var(--violet); }
   
   .project-card > p:not(.project-type):not(.project-links) {
     font-size: var(--text-sm);
     color: var(--ink-muted);
     max-width: none;
-    margin-bottom: auto;          /* pushes the tags to the bottom of the card */
+    margin-bottom: auto;
   }
   
   .project-links {
@@ -532,9 +724,18 @@
     font-size: var(--text-sm);
   }
   
+  .project-links a { text-decoration: none; }
+  
+  .project-links a::after {
+    content: " →";
+    transition: opacity 0.2s ease;
+  }
+  
+  .project-card:hover .project-links a { color: var(--violet-deep); }
+  
   
   /* ==========================================================================
-     13. TAGS (tech chips, shared by projects and skills)
+     13. TAGS
      ========================================================================== */
   
   .tags {
@@ -544,18 +745,20 @@
   }
   
   .tags li {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 2px var(--space-2);
+    background: var(--violet-soft);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 3px var(--space-3);
     font-size: var(--text-xs);
-    color: var(--ink-muted);
+    color: var(--violet);
+    transition: border-color 0.15s ease;
   }
+  
+  .tags li:hover { border-color: var(--lilac); }
   
   
   /* ==========================================================================
      14. SKILLS
-     Each group is a labelled row: label column, then the tags.
      ========================================================================== */
   
   .skills-groups {
@@ -567,7 +770,7 @@
   .skill-group {
     display: grid;
     grid-template-columns: 9rem 1fr;
-    gap: var(--space-4);
+    gap: var(--space-6);
     align-items: start;
     padding-bottom: var(--space-6);
     border-bottom: 1px solid var(--line);
@@ -582,8 +785,8 @@
     color: var(--ink-muted);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding-top: 2px;
+    letter-spacing: 0.08em;
+    padding-top: 3px;
   }
   
   
@@ -597,9 +800,7 @@
     gap: var(--space-12);
   }
   
-  .two-col h3 {
-    margin-bottom: var(--space-4);
-  }
+  .two-col h3 { margin-bottom: var(--space-6); }
   
   .plain-list {
     display: flex;
@@ -610,11 +811,14 @@
   .plain-list li {
     display: flex;
     flex-direction: column;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--line);
+    transition: border-color 0.18s ease;
   }
   
-  .plain-list strong {
-    font-size: var(--text-sm);
-  }
+  .plain-list li:hover { border-left-color: var(--lilac); }
+  
+  .plain-list strong { font-size: var(--text-sm); }
   
   .plain-list span {
     font-family: var(--font-mono);
@@ -631,7 +835,11 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    max-width: 32rem;
+    max-width: 34rem;
+    padding: var(--space-8);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
   }
   
   .field {
@@ -648,27 +856,28 @@
   
   .field input,
   .field textarea {
-    background: var(--surface);
+    background: var(--paper);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: var(--space-3);
     font-size: var(--text-sm);
     resize: vertical;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
   }
   
   .field input:focus,
   .field textarea:focus {
-    border-color: var(--accent);
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px rgb(124 58 237 / 0.14);
   }
   
-  .contact-form .btn {
-    align-self: flex-start;
-  }
+  .contact-form .btn { align-self: flex-start; }
   
   .form-status {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-    min-height: 1.5rem;          /* reserves space so the layout doesn't jump */
+    min-height: 1.5rem;
   }
   
   
@@ -679,6 +888,7 @@
   .site-footer {
     border-top: 1px solid var(--line);
     padding-block: var(--space-8);
+    background: var(--paper-2);
   }
   
   .site-footer .container {
@@ -695,89 +905,83 @@
     max-width: none;
   }
   
-  .footer-links {
-    display: flex;
-    gap: var(--space-4);
+  .footer-links { display: flex; gap: var(--space-4); }
+  
+  .footer-links a {
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  
+  .footer-links a:hover { color: var(--violet); }
+  
+  
+  /* ==========================================================================
+     18. SCROLL REVEAL
+     JavaScript adds data-reveal to section children, then .is-visible when
+     they enter the viewport. The stagger delay is set inline by the script.
+     ========================================================================== */
+  
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
   }
   
   
   /* ==========================================================================
-     18. REDUCED MOTION
-     Respect people who have asked their system for less animation.
+     19. RESPONSIVE — ≤ 880px
      ========================================================================== */
   
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-/* ==========================================================================
-   19. RESPONSIVE — TABLET AND BELOW (≤ 860px)
-   Multi-column grids collapse, and the nav becomes a dropdown panel.
-   ========================================================================== */
-
-   @media (max-width: 860px) {
-
-    /* --- Grids collapse to a single column --- */
+  @media (max-width: 880px) {
+  
     .cards,
     .projects-grid,
     .two-col {
       grid-template-columns: 1fr;
     }
   
-    /* Skill labels move above their tags instead of sitting beside them */
     .skill-group {
       grid-template-columns: 1fr;
       gap: var(--space-3);
     }
   
-    .two-col {
-      gap: var(--space-8);
-    }
+    .two-col { gap: var(--space-8); }
   
-    /* --- Hamburger button appears --- */
+    .section { padding-block: var(--space-16); }
+  
     .nav-toggle {
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 4px;
-      width: 2.25rem;
-      height: 2.25rem;
-      padding: 0 6px;
-      background: none;
+      width: 2.375rem;
+      height: 2.375rem;
+      padding: 0 7px;
+      background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: 999px;
       cursor: pointer;
-      order: 3;                    /* sits after the theme toggle */
+      order: 3;
     }
   
-    /* The three bars inside the button */
     .nav-toggle span {
       display: block;
       height: 1.5px;
+      border-radius: 999px;
       background: var(--ink);
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      transition: transform 0.22s ease, opacity 0.22s ease;
     }
   
-    /* When the menu is open, the bars become an X.
-       JavaScript adds the .is-open class in Step 7. */
-    .nav-toggle.is-open span:nth-child(1) {
-      transform: translateY(5.5px) rotate(45deg);
-    }
-    .nav-toggle.is-open span:nth-child(2) {
-      opacity: 0;
-    }
-    .nav-toggle.is-open span:nth-child(3) {
-      transform: translateY(-5.5px) rotate(-45deg);
-    }
+    .nav-toggle.is-open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
   
-    /* --- Nav links become a dropdown panel --- */
     .nav-links {
       position: absolute;
       top: var(--header-height);
@@ -785,17 +989,15 @@
       right: 0;
       flex-direction: column;
       gap: 0;
-      background: var(--surface);
+      background: color-mix(in srgb, var(--surface) 96%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
       padding: var(--space-2) var(--space-6) var(--space-4);
-  
-      /* Hidden by default, but still in the layout so it can animate.
-         visibility + opacity instead of display:none means the panel can
-         transition, and screen readers correctly skip it while hidden. */
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-8px);
-      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+      transform: translateY(-10px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     }
   
     .nav-links.is-open {
@@ -804,60 +1006,72 @@
       transform: translateY(0);
     }
   
-    .nav-links li {
-      border-bottom: 1px solid var(--line);
-    }
-  
-    .nav-links li:last-child {
-      border-bottom: none;
-    }
+    .nav-links li { border-bottom: 1px solid var(--line); }
+    .nav-links li:last-child { border-bottom: none; }
   
     .nav-links a {
-      display: block;               /* full-width tap target */
+      display: block;
       padding: var(--space-3) 0;
     }
   
-    .theme-toggle {
-      order: 2;
-    }
+    .nav-links a::after { display: none; }
+  
+    .theme-toggle { order: 2; }
   }
   
   
   /* ==========================================================================
-     20. RESPONSIVE — PHONE (≤ 560px)
+     20. RESPONSIVE — ≤ 560px
      ========================================================================== */
   
   @media (max-width: 560px) {
   
     .stats {
       grid-template-columns: 1fr;
-      gap: var(--space-6);
+      gap: var(--space-3);
     }
   
-    .hero {
-      padding-block: var(--space-16) var(--space-12);
-    }
+    .hero { padding-block: var(--space-16) var(--space-12); }
   
-    .section {
-      padding-block: var(--space-12);
-    }
+    .hero::before,
+    .hero::after { filter: blur(70px); }
   
     .hero-actions .btn {
-      flex: 1;                      /* buttons share the row evenly */
+      flex: 1;
       text-align: center;
     }
   
-    .hero-links {
-      gap: var(--space-4);
-    }
+    .hero-links { gap: var(--space-4); }
   
-    /* A long left indent wastes precious width on a phone */
-    .timeline-item {
-      padding-left: var(--space-6);
-    }
+    .contact-form { padding: var(--space-6) var(--space-4); }
   
     .site-footer .container {
       flex-direction: column;
       align-items: flex-start;
+    }
+  }
+  
+  
+  /* ==========================================================================
+     21. REDUCED MOTION
+     ========================================================================== */
+  
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  
+    .hero::before,
+    .hero::after,
+    .hero-badge::before { animation: none; }
+  
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+  
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
     }
   }
