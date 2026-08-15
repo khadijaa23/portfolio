@@ -1,9 +1,11 @@
 # API reference
 
 Base URL, local: `http://127.0.0.1:8000`
+
+Every endpoint is read-only and takes an optional `?lang=` parameter (`en` or
+`fr`, default `en`), falling back to English when a translation is missing.
 Interactive docs: `/docs` (Swagger UI) and `/redoc`, both generated from the code.
 
-All content endpoints are read-only and require no authentication.
 
 ---
 
@@ -91,49 +93,6 @@ Skill groups in display order.
 ## GET /api/education
 
 Degrees, certifications and spoken languages.
-
----
-
-## POST /api/contact
-
-Store a message from the contact form.
-
-**Request**
-
-```json
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "message": "Hello, we have an opening that might interest you."
-}
-```
-
-**Validation**
-
-| Field | Rule |
-| --- | --- |
-| `name` | 2–100 characters |
-| `email` | must be a valid address |
-| `message` | 10–2000 characters |
-
-**Responses**
-
-| Status | Body |
-| --- | --- |
-| `201` | `{ "id": 4, "detail": "Message received" }` |
-| `422` | Pydantic validation error naming the offending field |
-| `500` | `{ "detail": "Could not save the message" }` |
-
-A `422` body looks like this, which is what the frontend reads to show a
-field-specific error:
-
-```json
-{
-  "detail": [
-    { "loc": ["body", "email"], "msg": "value is not a valid email address" }
-  ]
-}
-```
 
 ---
 

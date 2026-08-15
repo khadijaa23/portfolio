@@ -83,7 +83,7 @@
     "title": "Ce portfolio",
     "kind": "Projet personnel",
     "featured": true,
-    "description": "Développé de zéro : aucun framework frontend, un routeur côté client écrit à la main, et un backend FastAPI qui sert le contenu et gère le formulaire de contact.",
+    "description": "Développé de zéro : aucun framework frontend, un routeur côté client écrit à la main, et un backend FastAPI en lecture seule qui sert le contenu bilingue.",
     "role": "Tout — frontend, API, documentation et déploiement.",
     "features": [
       {
@@ -92,22 +92,27 @@
       },
       {
         "name": "API REST en Python",
-        "description": "FastAPI sert tous les points d'entrée du contenu, avec validation Pydantic et documentation OpenAPI générée."
+        "description": "FastAPI sert tous les points d'entrée du contenu en français et en anglais, avec des paramètres typés et une documentation OpenAPI générée depuis le code."
       },
       {
         "name": "Dégradation élégante",
-        "description": "Si l'API est injoignable, le frontend bascule sur les mêmes fichiers JSON servis en statique : le site reste consultable."
+        "description": "Si l'API est injoignable, le frontend bascule sur les mêmes fichiers JSON servis en statique : le site reste entièrement consultable."
+      },
+      {
+        "name": "Bilingue par conception",
+        "description": "Le contenu est dupliqué par langue et l'API retombe sur l'anglais si une traduction manque : une traduction partielle ne casse jamais une page."
       }
     ],
     "tags": [
       "Python",
       "FastAPI",
-      "Pydantic",
       "JavaScript",
       "API REST",
-      "SQLite"
+      "CSS"
     ],
     "repo_url": "https://github.com/khadijaa23/portfolio",
-    "live_url": "https://khadijaa23.github.io/portfolio/"
+    "live_url": "https://khadijaa23.github.io/portfolio/",
+    "diagram": "assets/architecture.svg",
+    "diagram_caption": "L’architecture du site : frontend statique, API Python, repli local."
   }
 ]

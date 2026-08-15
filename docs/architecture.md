@@ -1,28 +1,12 @@
 # Architecture
 
+![Portfolio architecture](../assets/architecture.svg)
+
 ## Overview
 
 A single-page application served as static files, backed by a Python REST API.
 
-```
-┌──────────────────────────────────┐        ┌──────────────────────────────┐
-│  Frontend (static, no build)     │        │  Backend (FastAPI)           │
-│  GitHub Pages                    │  HTTPS │  Render                      │
-│                                  │ ─────► │                              │
-│  index.html   app shell          │  JSON  │  GET  /api/profile           │
-│  script.js    router + views     │ ◄───── │  GET  /api/experience        │
-│  style.css    design system      │        │  GET  /api/projects          │
-│                                  │        │  GET  /api/projects/{slug}   │
-│  fallback ──► content/*.json     │        │  GET  /api/skills            │
-└──────────────────────────────────┘        │  GET  /api/education         │
-                                            │  POST /api/contact           │
-                                            └──────────┬───────────────────┘
-                                                       │
-                                         ┌─────────────┴──────────────┐
-                                         │                            │
-                                   content/*.json              portfolio.db
-                                   (read at startup)           (SQLite, messages)
-```
+See the diagram above.
 
 ## The frontend is a hand-written SPA
 
@@ -57,15 +41,15 @@ Updating the portfolio means editing data; `main.py`, `index.html` and
 **Two sources for the same content.** `getContent` requests the API first and
 falls back to the same JSON files served as static assets. The site is fully
 readable when the backend is asleep, redeploying or simply not running locally.
-Only the contact form genuinely requires the API.
+In practice the site is fully usable with the backend switched off.
 
 **FastAPI over Flask.** Validation, serialization and OpenAPI documentation come
 from type hints via Pydantic, so there is no hand-written request checking, and
 `/docs` is generated from the code.
 
-**SQLite for messages.** One file, no server, no pooling. A contact form
-receives a handful of messages a week. Moving to PostgreSQL later means
-rewriting two functions.
+**No database.** The contact page links straight to email, LinkedIn and GitHub,
+so nothing is written server-side. A database that stores nothing is a liability
+to maintain, not a feature — it was removed once the form was dropped.
 
 **Theming through custom properties.** Every color is a token in `:root`,
 overridden under `html[data-theme="dark"]`. The toggle sets one attribute;
@@ -82,9 +66,9 @@ transitions and scroll reveals are all disabled under
   later with pre-rendering if it matters.
 - **Content is cached at process start** (`lru_cache`), so editing a JSON file
   needs a restart. `--reload` handles this locally; production needs a redeploy.
-- **No rate limiting** on `POST /api/contact`. A public form should have it
-  before it attracts spam.
-- **Messages are stored, not forwarded.** They are read from the database; there
-  is no email notification and no admin view yet.
-- **Render's free tier has an ephemeral filesystem**, so `portfolio.db` is reset
-  on every deploy. A persistent disk or hosted PostgreSQL fixes it.
+- **Render's free tier sleeps after inactivity**, so the first API call can take
+  30–60 seconds. The static fallback means the visitor never sees a blank page,
+  but the content they read may briefly come from the fallback copy rather than
+  the API.
+- **Content is duplicated** between `content/en` and `content/fr`. Structural
+  changes have to be made twice; a schema check in CI would catch drift.

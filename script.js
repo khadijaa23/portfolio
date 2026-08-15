@@ -9,7 +9,6 @@
    4. Views         — one object per page
    5. Router        — maps the URL hash to a view
    6. Chrome        — theme, language and menu controls
-   7. Contact form  — delegated submit handler
    ========================================================================== */
 
 'use strict';
@@ -285,6 +284,14 @@ const ProjectDetailView = {
       project.live_url ? `<a class="btn btn-primary" href="${esc(project.live_url)}">${esc(s.visitSite)}</a>` : '',
     ].join('');
 
+    // Optional architecture diagram, shown above the detail columns.
+    const diagram = project.diagram
+      ? `<figure class="diagram">
+           <img src="${esc(project.diagram)}" alt="${esc(project.title)} architecture diagram" loading="lazy">
+           ${project.diagram_caption ? `<figcaption>${esc(project.diagram_caption)}</figcaption>` : ''}
+         </figure>`
+      : '';
+
     const features = (project.features || [])
       .map((item) => `
         <article class="feature">
@@ -298,6 +305,8 @@ const ProjectDetailView = {
         <a class="back-link" href="#/projects">${esc(s.back)}</a>
 
         ${pageHeader(project.kind, project.title, project.description)}
+
+        ${diagram}
 
         <div class="detail-grid">
           <section>

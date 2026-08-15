@@ -34,7 +34,7 @@ Open `http://localhost:5500`. Use a server rather than opening `index.html`
 directly: `file://` pages cannot make `fetch` requests.
 
 The frontend works without the backend — it falls back to the JSON files in
-`content/`. Only the contact form needs the API running.
+`content/`. The API is the primary source; the files are the fallback.
 
 ## Updating content
 
@@ -64,8 +64,7 @@ portfolio/
 ├── content/              all portfolio content as JSON
 ├── backend/
 │   ├── main.py           FastAPI application
-│   ├── requirements.txt
-│   └── portfolio.db      SQLite, created on first run (gitignored)
+│   └── requirements.txt
 └── docs/
 ```
 
@@ -81,13 +80,6 @@ look like. Everything interpolated into HTML goes through `esc()`.
 data. Keep route functions thin.
 
 See [frontend.md](frontend.md) for how to add a page.
-
-## Reading stored messages
-
-```bash
-cd backend
-sqlite3 portfolio.db "SELECT created_at, name, email, message FROM messages ORDER BY id DESC;"
-```
 
 ## Committing
 

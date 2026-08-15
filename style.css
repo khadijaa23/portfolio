@@ -921,6 +921,32 @@ html[data-theme="dark"] .hero::after {
 }
 
 
+/* --------------------------------------------------------------------------
+   Architecture diagram on project detail pages
+   -------------------------------------------------------------------------- */
+
+.diagram {
+  margin-bottom: var(--space-12);
+  padding: var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.diagram img {
+  width: 100%;
+  height: auto;
+}
+
+.diagram figcaption {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+
 /* ==========================================================================
    16. CONTACT
    Direct methods instead of a form: each card is a link that opens the

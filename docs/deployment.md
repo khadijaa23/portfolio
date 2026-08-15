@@ -83,7 +83,7 @@ Live at `https://khadijaa23.github.io/portfolio/`, redeployed on every push.
 
 - [ ] Page loads over HTTPS with no console errors
 - [ ] Projects render from the API (network tab shows the `/api/projects` call)
-- [ ] Contact form returns a success message, not a CORS error
+- [ ] The contact page links open your email client, LinkedIn and GitHub
 - [ ] Dark mode persists across a reload
 - [ ] Layout is correct on a phone-width screen
 - [ ] The CV link downloads the PDF
@@ -103,11 +103,6 @@ few seconds on the first request.
 **404 on the CV link.** GitHub Pages serves from the repository root, so the
 `cv/` folder must be committed. Check that it is not caught by `.gitignore`.
 
-**Messages disappear after a redeploy.** Render's free tier has an ephemeral
-filesystem: `portfolio.db` is recreated on each deploy. For persistence, attach
-a Render disk or move to a hosted PostgreSQL instance and replace the two
-`sqlite3` functions in `main.py`.
-
 ---
 
 ## Notes on the free tier
@@ -115,5 +110,4 @@ a Render disk or move to a hosted PostgreSQL instance and replace the two
 | Limitation | Effect | If it matters |
 | --- | --- | --- |
 | Instance sleeps when idle | First request takes a few seconds | Ping `/api/health` on a schedule |
-| Ephemeral filesystem | Stored messages are lost on redeploy | Attach a disk, or use PostgreSQL |
 | No custom domain on the free plan | URL stays `*.onrender.com` | Upgrade, or proxy through a domain |

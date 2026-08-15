@@ -80,6 +80,8 @@ An array.
 | `description` | string | Two or three sentences |
 | `role` | string | What you personally did |
 | `tags` | array of strings | Technologies, shown as chips |
+| `diagram` | string or null | Path to an SVG shown above the detail columns |
+| `diagram_caption` | string or null | One line under the diagram |
 | `repo_url` | string or null | `null` hides the link |
 | `live_url` | string or null | `null` hides the link |
 
