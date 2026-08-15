@@ -123,7 +123,7 @@ const HomeView = {
 
         <div class="hero-actions">
           <a href="#/projects" class="btn btn-primary">See my work</a>
-          <a href="${esc(profile.links.cv)}" class="btn btn-secondary" download>Download CV</a>
+          <a href="#/contact" class="btn btn-secondary">Get in touch</a>
         </div>
 
         <ul class="hero-links">
@@ -224,6 +224,17 @@ const ProjectDetailView = {
       project.live_url ? `<a class="btn btn-primary" href="${esc(project.live_url)}">Visit site</a>` : '',
     ].join('');
 
+    // Optional per-project breakdown of what was actually built.
+    const features = (project.features || [])
+      .map(
+        (item) => `
+          <article class="feature">
+            <h3>${esc(item.name)}</h3>
+            <p>${esc(item.description)}</p>
+          </article>`
+      )
+      .join('');
+
     return `
       <div class="container page">
         <a class="back-link" href="#/projects">Back to projects</a>
@@ -241,6 +252,12 @@ const ProjectDetailView = {
             ${tagList(project.tags)}
           </section>
         </div>
+
+        ${features ? `
+          <section class="feature-list">
+            <h2>What it does</h2>
+            ${features}
+          </section>` : ''}
 
         ${links ? `<div class="hero-actions">${links}</div>`
                 : '<p class="note">This is client work, so the source is not public.</p>'}

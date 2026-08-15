@@ -1079,6 +1079,34 @@ html[data-theme="dark"] .form-status.is-error { color: #F87171; }
 
 
 /* ==========================================================================
+   24b. FEATURE LIST (project detail pages)
+   ========================================================================== */
+
+.feature-list { margin-bottom: var(--space-12); }
+
+.feature-list > h2 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-6);
+}
+
+.feature {
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--line);
+}
+
+.feature h3 {
+  font-size: var(--text-base);
+  color: var(--violet);
+  margin-bottom: var(--space-2);
+}
+
+.feature p {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+
+/* ==========================================================================
    25. RESPONSIVE — ≤ 880px
    ========================================================================== */
 

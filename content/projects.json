@@ -1,23 +1,63 @@
 [
   {
+    "slug": "odoo-erp",
+    "title": "Odoo ERP for universities and schools",
+    "kind": "ERP development · at work",
+    "featured": true,
+    "description": "Custom Odoo modules in Python for six international universities and private schools, covering the full student lifecycle from application to graduation. Built with functional consultants, deployed on Kubernetes and maintained in production.",
+    "role": "Module development in Python and the Odoo ORM, from gathering each client's requirements through to deployment and production support.",
+    "features": [
+      {
+        "name": "Admissions",
+        "description": "A complete admissions module customised per institution: application forms, document upload, eligibility rules, review and approval workflow, and automatic creation of the student record on acceptance. Adapted separately for university and high-school intake, which differ in requirements and validation stages."
+      },
+      {
+        "name": "Tuition and fees",
+        "description": "Tuition module handling fee structures per programme and academic year, instalment plans, invoicing, payment tracking and outstanding balances, integrated with Odoo accounting."
+      },
+      {
+        "name": "Accounting journals",
+        "description": "Journal management for student financial operations, so tuition and fee entries post correctly into the institution's accounts."
+      },
+      {
+        "name": "Student records",
+        "description": "Central student file: personal details, enrolment history, programme and class assignment, and document management."
+      },
+      {
+        "name": "Grading",
+        "description": "Grade entry per course and assessment, weighting rules, transcripts and result publication."
+      },
+      {
+        "name": "Timetables",
+        "description": "Scheduling for classes, rooms and teachers, with conflict detection."
+      }
+    ],
+    "tags": ["Python", "Odoo", "Odoo ORM", "PostgreSQL", "XML", "QWeb", "Docker", "Kubernetes"],
+    "repo_url": null,
+    "live_url": null
+  },
+  {
     "slug": "eduerp",
     "title": "eduERP",
     "kind": "Multi-tenant SaaS · at work",
     "featured": true,
     "description": "All-in-one platform for universities: ERP, LMS, CRM, HR, finance, billing and student records. In production with 2,000 students and 60 staff, built by a team of five.",
-    "role": "Full-stack development across the platform, plus the CI/CD pipeline.",
-    "tags": ["React 19", "TypeScript", "Node.js", "PostgreSQL", "Drizzle ORM", "Firebase"],
-    "repo_url": null,
-    "live_url": null
-  },
-  {
-    "slug": "odoo-erp",
-    "title": "Odoo ERP for six international clients",
-    "kind": "ERP customization · at work",
-    "featured": true,
-    "description": "Custom Python modules for universities and private schools — admissions, student records, grading, tuition fees and timetables — deployed on Kubernetes and maintained in production.",
-    "role": "Module development in Python, deployment on Kubernetes, production support.",
-    "tags": ["Python", "Odoo ORM", "PostgreSQL", "Docker", "Kubernetes"],
+    "role": "Full-stack development across the platform, client requirements gathering, code review and the CI/CD pipeline.",
+    "features": [
+      {
+        "name": "Multi-tenancy",
+        "description": "One platform serving several institutions, each with isolated data and its own configuration."
+      },
+      {
+        "name": "Academic and administrative modules",
+        "description": "ERP, LMS, CRM, HR, finance, billing and student records in a single system, so institutions stop juggling separate tools."
+      },
+      {
+        "name": "Delivery pipeline",
+        "description": "GitHub Actions running tests, builds and deployments automatically on every change."
+      }
+    ],
+    "tags": ["React 19", "TypeScript", "Node.js", "PostgreSQL", "Drizzle ORM", "Firebase", "GitHub Actions"],
     "repo_url": null,
     "live_url": null
   },
@@ -26,9 +66,23 @@
     "title": "This portfolio",
     "kind": "Personal project",
     "featured": true,
-    "description": "Built from scratch: no frontend framework, and a FastAPI backend serving the content files and handling the contact form.",
-    "role": "Everything — frontend, API, deployment.",
-    "tags": ["Python", "FastAPI", "JavaScript", "REST API", "SQLite"],
+    "description": "Built from scratch: no frontend framework, a hand-written client-side router, and a FastAPI backend serving the content and handling the contact form.",
+    "role": "Everything — frontend, API, documentation and deployment.",
+    "features": [
+      {
+        "name": "Hand-written router",
+        "description": "Hash-based routing with parameterised routes, so refreshes and the back button work on static hosting without a framework."
+      },
+      {
+        "name": "Python REST API",
+        "description": "FastAPI serving every content endpoint, with Pydantic validation and generated OpenAPI documentation."
+      },
+      {
+        "name": "Graceful degradation",
+        "description": "If the API is unreachable, the frontend falls back to the same JSON files served statically, so the site stays readable."
+      }
+    ],
+    "tags": ["Python", "FastAPI", "Pydantic", "JavaScript", "REST API", "SQLite"],
     "repo_url": "https://github.com/khadijaa23/portfolio",
     "live_url": "https://khadijaa23.github.io/portfolio/"
   }
