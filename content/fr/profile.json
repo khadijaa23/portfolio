@@ -1,8 +1,7 @@
 {
   "name": "Khadija Elamri",
   "title": "Développeur Full-Stack — Python & JavaScript",
-  "location": "Tunis, Tunisie",
-  "available": false,
+  "badge": "Actuellement sur eduERP",
   "tagline": "Trois ans à concevoir des plateformes ERP et SaaS en production. Python côté serveur, TypeScript et React côté client, et le pipeline CI/CD qui livre l'ensemble.",
   "links": {
     "email": "amrikadija23@gmail.com",

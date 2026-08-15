@@ -36,24 +36,24 @@ let LANG = detectLang();
 const STRINGS = {
   en: {
     nav: { home: 'Home', experience: 'Experience', projects: 'Projects', background: 'Background', contact: 'Contact' },
-    home: { seeWork: 'See my work', getInTouch: 'Get in touch', whatIDo: 'What I do', ctaTitle: "Let's talk", ctaIntro: 'Open to full-stack and DevOps roles, in Tunis or remote.' },
+    home: { seeWork: 'See my work', getInTouch: 'Get in touch', whatIDo: 'What I do', ctaTitle: "Let's talk", ctaIntro: 'Questions, ideas or a project in mind? Email is the quickest way to reach me.' },
     experience: { eyebrow: 'Experience', title: 'Where I have worked', intro: 'Three years building and running ERP and SaaS platforms, and a first commercial role before that.' },
     projects: { eyebrow: 'Projects', title: 'What I have built', intro: 'Production systems at work, and this site.', readMore: 'Read more' },
     detail: { back: 'Back to projects', role: 'My role', stack: 'Stack', features: 'What it does', sourceCode: 'Source code', visitSite: 'Visit site', private: 'This is client work, so the source is not public.' },
     background: { eyebrow: 'Background', title: 'Skills and education', intro: 'What I work with, and where I learned it.', skills: 'Skills', education: 'Education', certifications: 'Certifications', languages: 'Languages' },
-    contact: { eyebrow: 'Contact', title: "Let's talk", intro: 'Open to full-stack and DevOps roles, in Tunis or remote. The quickest way to reach me is by email — I read everything and reply within a couple of days.', emailLabel: 'Email', emailAction: 'Write to me', linkedinLabel: 'LinkedIn', linkedinAction: 'Connect', githubLabel: 'GitHub', githubAction: 'See my code', locationLabel: 'Based in', primary: 'Send me an email', subject: 'Hello Khadija' },
+    contact: { eyebrow: 'Contact', title: "Let's talk", intro: 'The quickest way to reach me is by email — I read everything and reply within a couple of days.', emailLabel: 'Email', emailAction: 'Write to me', linkedinLabel: 'LinkedIn', linkedinAction: 'Connect', githubLabel: 'GitHub', githubAction: 'See my code', primary: 'Send me an email', subject: 'Hello Khadija' },
     notFound: { eyebrow: '404', title: 'This page does not exist', intro: 'The link may be out of date.', home: 'Back to home' },
     error: { eyebrow: 'Error', title: 'Content unavailable', intro: 'The content could not be loaded. Please try again.', retry: 'Retry' },
     loading: 'Loading…',
   },
   fr: {
     nav: { home: 'Accueil', experience: 'Expérience', projects: 'Projets', background: 'Parcours', contact: 'Contact' },
-    home: { seeWork: 'Voir mes projets', getInTouch: 'Me contacter', whatIDo: 'Ce que je fais', ctaTitle: 'Discutons', ctaIntro: 'Ouverte aux postes full-stack et DevOps, à Tunis ou en télétravail.' },
+    home: { seeWork: 'Voir mes projets', getInTouch: 'Me contacter', whatIDo: 'Ce que je fais', ctaTitle: 'Discutons', ctaIntro: 'Une question, une idée ou un projet ? L\u2019e-mail est le moyen le plus simple de me joindre.' },
     experience: { eyebrow: 'Expérience', title: 'Mon parcours professionnel', intro: 'Trois ans à concevoir et exploiter des plateformes ERP et SaaS, précédés d\u2019une première expérience commerciale.' },
     projects: { eyebrow: 'Projets', title: 'Ce que j\u2019ai construit', intro: 'Des systèmes en production, et ce site.', readMore: 'En savoir plus' },
     detail: { back: 'Retour aux projets', role: 'Mon rôle', stack: 'Technologies', features: 'Fonctionnalités', sourceCode: 'Code source', visitSite: 'Voir le site', private: 'Projet client : le code source n\u2019est pas public.' },
     background: { eyebrow: 'Parcours', title: 'Compétences et formation', intro: 'Les technologies que j\u2019utilise, et où je les ai apprises.', skills: 'Compétences', education: 'Formation', certifications: 'Certifications', languages: 'Langues' },
-    contact: { eyebrow: 'Contact', title: 'Discutons', intro: 'Ouverte aux postes full-stack et DevOps, à Tunis ou en télétravail. Le plus simple est de m\u2019écrire par e-mail : je lis tout et réponds sous quelques jours.', emailLabel: 'E-mail', emailAction: 'M\u2019écrire', linkedinLabel: 'LinkedIn', linkedinAction: 'Se connecter', githubLabel: 'GitHub', githubAction: 'Voir mon code', locationLabel: 'Basée à', primary: 'M\u2019envoyer un e-mail', subject: 'Bonjour Khadija' },
+    contact: { eyebrow: 'Contact', title: 'Discutons', intro: 'Le plus simple est de m\u2019écrire par e-mail : je lis tout et réponds sous quelques jours.', emailLabel: 'E-mail', emailAction: 'M\u2019écrire', linkedinLabel: 'LinkedIn', linkedinAction: 'Se connecter', githubLabel: 'GitHub', githubAction: 'Voir mon code', primary: 'M\u2019envoyer un e-mail', subject: 'Bonjour Khadija' },
     notFound: { eyebrow: '404', title: 'Cette page n\u2019existe pas', intro: 'Le lien est peut-être obsolète.', home: 'Retour à l\u2019accueil' },
     error: { eyebrow: 'Erreur', title: 'Contenu indisponible', intro: 'Le contenu n\u2019a pas pu être chargé. Veuillez réessayer.', retry: 'Réessayer' },
     loading: 'Chargement…',
@@ -165,7 +165,7 @@ const HomeView = {
 
     return `
       <section class="hero container">
-        ${profile.available ? `<p class="hero-badge">${LANG === 'fr' ? 'Disponible' : 'Available for work'}</p>` : ''}
+        ${profile.badge ? `<p class="hero-badge">${esc(profile.badge)}</p>` : ''}
         <h1>${esc(profile.name)}</h1>
         <p class="hero-title">${esc(profile.title)}</p>
         <p class="hero-tagline">${esc(profile.tagline)}</p>
@@ -435,8 +435,6 @@ const ContactView = {
         <div class="hero-actions contact-cta">
           <a class="btn btn-primary" href="${esc(mailto)}">${esc(s.primary)}</a>
         </div>
-
-        <p class="note">${esc(s.locationLabel)} ${esc(profile.location)}</p>
       </div>
     `;
   },

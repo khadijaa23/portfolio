@@ -34,8 +34,7 @@ An object. Drives the hero, the headline numbers and the "What I do" cards.
 | --- | --- | --- |
 | `name` | string | Shown in the hero and the nav |
 | `title` | string | Job title line under the name |
-| `location` | string | City, country |
-| `available` | boolean | Shows or hides the "Available for work" badge |
+| `badge` | string | Small pill above the name; omit the field to hide it |
 | `tagline` | string | One or two sentences, the elevator pitch |
 | `links` | object | `email`, `github`, `linkedin`, `cv` |
 | `highlights` | array | Headline numbers: `value` and `label` |
@@ -55,7 +54,6 @@ An array, most recent role first.
 | `slug` | string | Unique identifier, lowercase and hyphenated |
 | `role` | string | Job title |
 | `company` | string | Employer |
-| `location` | string | City, country |
 | `start` | string | `YYYY-MM`, machine-readable |
 | `end` | string or null | `null` means current |
 | `period` | string | Human-readable, e.g. `Sep 2024 — Present` |
