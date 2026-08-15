@@ -41,7 +41,7 @@ const STRINGS = {
     projects: { eyebrow: 'Projects', title: 'What I have built', intro: 'Production systems at work, and this site.', readMore: 'Read more' },
     detail: { back: 'Back to projects', role: 'My role', stack: 'Stack', features: 'What it does', sourceCode: 'Source code', visitSite: 'Visit site', private: 'This is client work, so the source is not public.' },
     background: { eyebrow: 'Background', title: 'Skills and education', intro: 'What I work with, and where I learned it.', skills: 'Skills', education: 'Education', certifications: 'Certifications', languages: 'Languages' },
-    contact: { eyebrow: 'Contact', title: "Let's talk", intro: 'Open to full-stack and DevOps roles, in Tunis or remote.', name: 'Name', email: 'Email', message: 'Message', send: 'Send message', sending: 'Sending…', sent: 'Message sent. I will reply soon.', failed: 'Could not reach the server.', emailInstead: 'Send it by email instead', or: 'Or email me directly at' },
+    contact: { eyebrow: 'Contact', title: "Let's talk", intro: 'Open to full-stack and DevOps roles, in Tunis or remote. The quickest way to reach me is by email — I read everything and reply within a couple of days.', emailLabel: 'Email', emailAction: 'Write to me', linkedinLabel: 'LinkedIn', linkedinAction: 'Connect', githubLabel: 'GitHub', githubAction: 'See my code', locationLabel: 'Based in', primary: 'Send me an email', subject: 'Hello Khadija' },
     notFound: { eyebrow: '404', title: 'This page does not exist', intro: 'The link may be out of date.', home: 'Back to home' },
     error: { eyebrow: 'Error', title: 'Content unavailable', intro: 'The content could not be loaded. Please try again.', retry: 'Retry' },
     loading: 'Loading…',
@@ -53,7 +53,7 @@ const STRINGS = {
     projects: { eyebrow: 'Projets', title: 'Ce que j\u2019ai construit', intro: 'Des systèmes en production, et ce site.', readMore: 'En savoir plus' },
     detail: { back: 'Retour aux projets', role: 'Mon rôle', stack: 'Technologies', features: 'Fonctionnalités', sourceCode: 'Code source', visitSite: 'Voir le site', private: 'Projet client : le code source n\u2019est pas public.' },
     background: { eyebrow: 'Parcours', title: 'Compétences et formation', intro: 'Les technologies que j\u2019utilise, et où je les ai apprises.', skills: 'Compétences', education: 'Formation', certifications: 'Certifications', languages: 'Langues' },
-    contact: { eyebrow: 'Contact', title: 'Discutons', intro: 'Ouverte aux postes full-stack et DevOps, à Tunis ou en télétravail.', name: 'Nom', email: 'E-mail', message: 'Message', send: 'Envoyer', sending: 'Envoi…', sent: 'Message envoyé. Je vous réponds rapidement.', failed: 'Serveur injoignable.', emailInstead: 'Envoyer par e-mail', or: 'Ou écrivez-moi directement à' },
+    contact: { eyebrow: 'Contact', title: 'Discutons', intro: 'Ouverte aux postes full-stack et DevOps, à Tunis ou en télétravail. Le plus simple est de m\u2019écrire par e-mail : je lis tout et réponds sous quelques jours.', emailLabel: 'E-mail', emailAction: 'M\u2019écrire', linkedinLabel: 'LinkedIn', linkedinAction: 'Se connecter', githubLabel: 'GitHub', githubAction: 'Voir mon code', locationLabel: 'Basée à', primary: 'M\u2019envoyer un e-mail', subject: 'Bonjour Khadija' },
     notFound: { eyebrow: '404', title: 'Cette page n\u2019existe pas', intro: 'Le lien est peut-être obsolète.', home: 'Retour à l\u2019accueil' },
     error: { eyebrow: 'Erreur', title: 'Contenu indisponible', intro: 'Le contenu n\u2019a pas pu être chargé. Veuillez réessayer.', retry: 'Réessayer' },
     loading: 'Chargement…',
@@ -402,31 +402,41 @@ const ContactView = {
     const profile = await getContent('profile');
     const s = t().contact;
 
+    // A pre-filled subject line means the message arrives already labelled.
+    const mailto = `mailto:${profile.links.email}?subject=${encodeURIComponent(s.subject)}`;
+
+    // Show the handle rather than the full URL: take the last path segment.
+    const handle = function (url) {
+      return url.replace(/\/$/, '').split('/').pop();
+    };
+
+    const methods = [
+      { label: s.emailLabel, value: profile.links.email, action: s.emailAction, href: mailto, primary: true },
+      { label: s.linkedinLabel, value: handle(profile.links.linkedin), action: s.linkedinAction, href: profile.links.linkedin },
+      { label: s.githubLabel, value: handle(profile.links.github), action: s.githubAction, href: profile.links.github },
+    ];
+
+    const cards = methods
+      .map((item) => `
+        <a class="contact-card${item.primary ? ' is-primary' : ''}" href="${esc(item.href)}"
+           ${item.primary ? '' : 'target="_blank" rel="noopener"'}>
+          <p class="contact-label">${esc(item.label)}</p>
+          <p class="contact-value">${esc(item.value)}</p>
+          <p class="contact-action">${esc(item.action)}</p>
+        </a>`)
+      .join('');
+
     return `
       <div class="container page">
         ${pageHeader(s.eyebrow, s.title, s.intro)}
 
-        <form class="contact-form" id="contact-form" novalidate>
-          <div class="field">
-            <label for="name">${esc(s.name)}</label>
-            <input type="text" id="name" name="name" required minlength="2">
-          </div>
-          <div class="field">
-            <label for="email">${esc(s.email)}</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="field">
-            <label for="message">${esc(s.message)}</label>
-            <textarea id="message" name="message" rows="5" required minlength="10"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">${esc(s.send)}</button>
-          <p class="form-status" id="form-status"></p>
-        </form>
+        <div class="contact-grid">${cards}</div>
 
-        <p class="note">
-          ${esc(s.or)}
-          <a href="mailto:${esc(profile.links.email)}">${esc(profile.links.email)}</a>.
-        </p>
+        <div class="hero-actions contact-cta">
+          <a class="btn btn-primary" href="${esc(mailto)}">${esc(s.primary)}</a>
+        </div>
+
+        <p class="note">${esc(s.locationLabel)} ${esc(profile.location)}</p>
       </div>
     `;
   },
@@ -548,7 +558,7 @@ function revealOnScroll() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const targets = app.querySelectorAll(
-    '.hero > *, .page-head, .stat, .card, .role, .project-card, .skill-group, .two-col > div, .contact-form, .section-block, .feature'
+    '.hero > *, .page-head, .stat, .card, .role, .project-card, .skill-group, .two-col > div, .contact-card, .section-block, .feature'
   );
 
   const observer = new IntersectionObserver(
@@ -650,67 +660,4 @@ themeToggle.addEventListener('click', function () {
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (event) {
   if (!localStorage.getItem('theme')) applyTheme(event.matches ? 'dark' : 'light');
-});
-
-
-/* ==========================================================================
-   8. CONTACT FORM
-   One delegated listener on #app, so it works for any form the router
-   renders, no matter when. Attaching it to the form itself is fragile:
-   the element is replaced on every navigation.
-   ========================================================================== */
-
-app.addEventListener('submit', async function (event) {
-  const form = event.target.closest('#contact-form');
-  if (!form) return;
-
-  event.preventDefault();          // stops the native submit and page reload
-
-  const s = t().contact;
-  const status = form.querySelector('#form-status');
-  const button = form.querySelector('button[type="submit"]');
-  const data = Object.fromEntries(new FormData(form));
-
-  // Fallback used whenever the API cannot be reached: hand the visitor a
-  // pre-filled email so the message is never simply lost.
-  const mailtoLink = function () {
-    const subject = encodeURIComponent(`Portfolio — ${data.name || ''}`);
-    const body = encodeURIComponent(`${data.message || ''}\n\n${data.name || ''} <${data.email || ''}>`);
-    return `mailto:amrikadija23@gmail.com?subject=${subject}&body=${body}`;
-  };
-
-  if (!API_BASE) {
-    status.innerHTML = `<a href="${mailtoLink()}">${esc(s.emailInstead)}</a>`;
-    status.className = 'form-status is-error';
-    window.location.href = mailtoLink();
-    return;
-  }
-
-  button.disabled = true;
-  status.textContent = s.sending;
-  status.className = 'form-status';
-
-  try {
-    const response = await fetch(`${API_BASE}/api/contact`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (response.status === 422) {
-      const problem = await response.json();
-      const first = problem.detail?.[0];
-      throw new Error(first ? `${first.loc.at(-1)}: ${first.msg}` : 'Invalid input');
-    }
-    if (!response.ok) throw new Error('Server error');
-
-    form.reset();
-    status.textContent = s.sent;
-    status.className = 'form-status is-success';
-  } catch (error) {
-    status.innerHTML = `${esc(s.failed)} <a href="${mailtoLink()}">${esc(s.emailInstead)}</a>`;
-    status.className = 'form-status is-error';
-  } finally {
-    button.disabled = false;
-  }
 });

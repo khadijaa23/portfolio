@@ -1,8 +1,12 @@
-# Email delivery
+# Contact and email
 
-By default the contact form **stores** messages in SQLite — it does not send
-email. This page explains how to read stored messages, and how to turn on
-forwarding so they arrive in your inbox.
+The Contact page has no form. It offers direct methods — a `mailto:` link with a
+pre-filled subject, plus LinkedIn and GitHub — so a message arrives in a real
+inbox with no server involved and nothing to break.
+
+`POST /api/contact` still exists in the backend for the case where a form is
+wanted later: it validates with Pydantic, stores to SQLite and can forward by
+email. The rest of this page documents that path.
 
 ## What happens without configuration
 

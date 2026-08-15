@@ -35,8 +35,8 @@ data, never code.
 - Content served from a Python REST API, with the same JSON files as a static
   fallback so the site works when the backend is asleep
 - Dark mode following the system preference, with an explicit choice remembered
-- Contact form validated by Pydantic, stored in SQLite and optionally
-  forwarded by email, with a pre-filled `mailto:` fallback when the API is down
+- Contact page with direct methods: a pre-filled `mailto:` link, LinkedIn and
+  GitHub — no form to fail, no server needed to reach me
 - Interactive API documentation generated from the code at `/docs`
 - Responsive down to mobile, visible keyboard focus, motion disabled under
   `prefers-reduced-motion`
