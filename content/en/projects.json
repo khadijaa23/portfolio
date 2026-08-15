@@ -32,7 +32,16 @@
         "description": "Scheduling for classes, rooms and teachers, with conflict detection."
       }
     ],
-    "tags": ["Python", "Odoo", "Odoo ORM", "PostgreSQL", "XML", "QWeb", "Docker", "Kubernetes"],
+    "tags": [
+      "Python",
+      "Odoo",
+      "Odoo ORM",
+      "PostgreSQL",
+      "XML",
+      "QWeb",
+      "Docker",
+      "Kubernetes"
+    ],
     "repo_url": null,
     "live_url": null
   },
@@ -57,7 +66,15 @@
         "description": "GitHub Actions running tests, builds and deployments automatically on every change."
       }
     ],
-    "tags": ["React 19", "TypeScript", "Node.js", "PostgreSQL", "Drizzle ORM", "Firebase", "GitHub Actions"],
+    "tags": [
+      "React 19",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "Firebase",
+      "GitHub Actions"
+    ],
     "repo_url": null,
     "live_url": null
   },
@@ -82,7 +99,14 @@
         "description": "If the API is unreachable, the frontend falls back to the same JSON files served statically, so the site stays readable."
       }
     ],
-    "tags": ["Python", "FastAPI", "Pydantic", "JavaScript", "REST API", "SQLite"],
+    "tags": [
+      "Python",
+      "FastAPI",
+      "Pydantic",
+      "JavaScript",
+      "REST API",
+      "SQLite"
+    ],
     "repo_url": "https://github.com/khadijaa23/portfolio",
     "live_url": "https://khadijaa23.github.io/portfolio/"
   }

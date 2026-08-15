@@ -1,0 +1,113 @@
+[
+  {
+    "slug": "odoo-erp",
+    "title": "ERP Odoo pour universités et écoles",
+    "kind": "Développement ERP · en entreprise",
+    "featured": true,
+    "description": "Modules Odoo sur mesure en Python pour six universités et écoles privées internationales, couvrant le parcours étudiant complet, de la candidature au diplôme. Conçus avec les consultants fonctionnels, déployés sur Kubernetes et maintenus en production.",
+    "role": "Développement des modules en Python et Odoo ORM, du recueil des besoins de chaque client jusqu'au déploiement et au support en production.",
+    "features": [
+      {
+        "name": "Admissions",
+        "description": "Module d'admission complet et personnalisé par établissement : formulaires de candidature, dépôt de documents, règles d'éligibilité, circuit de validation et création automatique du dossier étudiant à l'acceptation. Adapté séparément aux admissions universitaires et lycéennes, dont les exigences et les étapes de validation diffèrent."
+      },
+      {
+        "name": "Frais de scolarité",
+        "description": "Module de gestion des frais : grilles tarifaires par filière et année académique, échéanciers, facturation, suivi des paiements et des soldes, intégré à la comptabilité Odoo."
+      },
+      {
+        "name": "Journaux comptables",
+        "description": "Gestion des journaux pour les opérations financières des étudiants, afin que les écritures de scolarité et de frais s'imputent correctement dans la comptabilité de l'établissement."
+      },
+      {
+        "name": "Dossiers étudiants",
+        "description": "Dossier central de l'étudiant : informations personnelles, historique d'inscription, affectation en filière et en classe, gestion documentaire."
+      },
+      {
+        "name": "Notes et évaluations",
+        "description": "Saisie des notes par matière et par évaluation, règles de pondération, relevés et publication des résultats."
+      },
+      {
+        "name": "Emplois du temps",
+        "description": "Planification des cours, des salles et des enseignants, avec détection des conflits."
+      }
+    ],
+    "tags": [
+      "Python",
+      "Odoo",
+      "Odoo ORM",
+      "PostgreSQL",
+      "XML",
+      "QWeb",
+      "Docker",
+      "Kubernetes"
+    ],
+    "repo_url": null,
+    "live_url": null
+  },
+  {
+    "slug": "eduerp",
+    "title": "eduERP",
+    "kind": "SaaS multi-tenant · en entreprise",
+    "featured": true,
+    "description": "Plateforme tout-en-un pour les universités : ERP, LMS, CRM, RH, finance, facturation et dossiers étudiants. En production avec 2 000 étudiants et 60 employés, développée par une équipe de cinq ingénieurs.",
+    "role": "Développement full-stack sur l'ensemble de la plateforme, recueil des besoins clients, revues de code et pipeline CI/CD.",
+    "features": [
+      {
+        "name": "Multi-tenant",
+        "description": "Une seule plateforme au service de plusieurs établissements, chacun avec ses données isolées et sa propre configuration."
+      },
+      {
+        "name": "Modules pédagogiques et administratifs",
+        "description": "ERP, LMS, CRM, RH, finance, facturation et dossiers étudiants réunis dans un même système."
+      },
+      {
+        "name": "Chaîne de livraison",
+        "description": "GitHub Actions exécutant tests, builds et déploiements automatiquement à chaque modification."
+      }
+    ],
+    "tags": [
+      "React 19",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "Firebase",
+      "GitHub Actions"
+    ],
+    "repo_url": null,
+    "live_url": null
+  },
+  {
+    "slug": "portfolio",
+    "title": "Ce portfolio",
+    "kind": "Projet personnel",
+    "featured": true,
+    "description": "Développé de zéro : aucun framework frontend, un routeur côté client écrit à la main, et un backend FastAPI qui sert le contenu et gère le formulaire de contact.",
+    "role": "Tout — frontend, API, documentation et déploiement.",
+    "features": [
+      {
+        "name": "Routeur écrit à la main",
+        "description": "Routage par hash avec routes paramétrées, pour que le rafraîchissement et le bouton retour fonctionnent sur un hébergement statique, sans framework."
+      },
+      {
+        "name": "API REST en Python",
+        "description": "FastAPI sert tous les points d'entrée du contenu, avec validation Pydantic et documentation OpenAPI générée."
+      },
+      {
+        "name": "Dégradation élégante",
+        "description": "Si l'API est injoignable, le frontend bascule sur les mêmes fichiers JSON servis en statique : le site reste consultable."
+      }
+    ],
+    "tags": [
+      "Python",
+      "FastAPI",
+      "Pydantic",
+      "JavaScript",
+      "API REST",
+      "SQLite"
+    ],
+    "repo_url": "https://github.com/khadijaa23/portfolio",
+    "live_url": "https://khadijaa23.github.io/portfolio/"
+  }
+]

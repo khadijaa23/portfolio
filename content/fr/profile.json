@@ -1,0 +1,41 @@
+{
+  "name": "Khadija Elamri",
+  "title": "Développeur Full-Stack — Python & JavaScript",
+  "location": "Tunis, Tunisie",
+  "available": false,
+  "tagline": "Trois ans à concevoir des plateformes ERP et SaaS en production. Python côté serveur, TypeScript et React côté client, et le pipeline CI/CD qui livre l'ensemble.",
+  "links": {
+    "email": "amrikadija23@gmail.com",
+    "github": "https://github.com/khadijaa23",
+    "linkedin": "https://linkedin.com/in/khadija-elamri",
+    "cv": "cv/Khadija_Elamri_CV_FR.pdf"
+  },
+  "highlights": [
+    {
+      "value": "3+",
+      "label": "Ans de développement en production"
+    },
+    {
+      "value": "6",
+      "label": "Clients ERP internationaux maintenus"
+    },
+    {
+      "value": "2 000",
+      "label": "Étudiants sur la plateforme développée"
+    }
+  ],
+  "expertise": [
+    {
+      "title": "Python & Backend",
+      "description": "Une logique métier qui doit tenir en production : modules ERP Odoo en Python pour six clients internationaux, API REST, PostgreSQL et travail sur l'ORM. Le backend de ce site est lui-même en FastAPI."
+    },
+    {
+      "title": "Frontend & TypeScript",
+      "description": "Des interfaces utilisées au quotidien. React 19 et TypeScript avec Tailwind, TanStack Query et Radix UI sur un SaaS multi-tenant servant 2 000 étudiants et 60 employés."
+    },
+    {
+      "title": "DevOps & Cloud",
+      "description": "Livrer et maintenir en conditions opérationnelles : Docker, Kubernetes, pipelines GitHub Actions, AWS et supervision Grafana. Actuellement en fin de M.Sc. en Site Reliability Engineering."
+    }
+  ]
+}

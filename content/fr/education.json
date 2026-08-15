@@ -1,22 +1,22 @@
 {
   "education": [
     {
-      "degree": "M.Sc. in Site Reliability Engineering (SRE)",
+      "degree": "M.Sc. en Site Reliability Engineering (SRE)",
       "school": "Horizon School of Digital Technologies",
       "year": "2025",
-      "location": "Tunis, Tunisia"
+      "location": "Tunis"
     },
     {
-      "degree": "Bachelor's in Software Engineering",
-      "school": "Faculty of Sciences of Tunis (FST, El Manar)",
+      "degree": "Licence en Génie Logiciel",
+      "school": "Faculté des Sciences de Tunis (FST, El Manar)",
       "year": "2022",
-      "location": "Tunis, Tunisia"
+      "location": "Tunis"
     },
     {
-      "degree": "Baccalaureate in Mathematics",
+      "degree": "Baccalauréat Mathématiques",
       "school": null,
       "year": "2019",
-      "location": "Tunisia"
+      "location": "Tunisie"
     }
   ],
   "certifications": [
@@ -42,8 +42,17 @@
     }
   ],
   "languages": [
-    { "language": "Arabic", "level": "Native" },
-    { "language": "English", "level": "Fluent" },
-    { "language": "French", "level": "Professional" }
+    {
+      "language": "Arabe",
+      "level": "Langue maternelle"
+    },
+    {
+      "language": "Anglais",
+      "level": "Courant"
+    },
+    {
+      "language": "Français",
+      "level": "Professionnel"
+    }
   ]
 }

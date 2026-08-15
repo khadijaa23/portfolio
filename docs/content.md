@@ -1,10 +1,28 @@
 # Content model
 
-Every piece of text on the site comes from a JSON file in `content/`. The
+Every piece of text on the site comes from a JSON file under `content/`. The
 backend reads these files and serves them; the frontend renders whatever it
 receives. Nothing personal is written in `main.py`, `index.html` or `script.js`.
 
-To update the portfolio, edit a file here and restart the backend.
+## Languages
+
+The site is bilingual. Content is duplicated per locale:
+
+```
+content/
+├── en/     profile, experience, projects, skills, education
+└── fr/     the same five files, translated
+```
+
+The API takes a `?lang=` parameter (`en` or `fr`) and falls back to English if a
+translation is missing, so adding a language never breaks the site mid-way.
+Interface labels — navigation, buttons, form fields, page titles — are not in
+these files; they live in the `STRINGS` object in `script.js`.
+
+Keep the two locales structurally identical: same keys, same slugs, same order.
+Only the human-readable values differ.
+
+To update the portfolio, edit a file and restart the backend.
 
 ---
 
@@ -42,6 +60,7 @@ An array, most recent role first.
 | `end` | string or null | `null` means current |
 | `period` | string | Human-readable, e.g. `Sep 2024 — Present` |
 | `current` | boolean | Convenience flag for styling |
+| `summary` | string | One line read before the bullets; keep it skimmable |
 | `highlights` | array of strings | Bullets, each one achievement |
 | `stack` | array of strings | Technologies used in that role |
 

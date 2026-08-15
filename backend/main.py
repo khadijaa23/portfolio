@@ -1,32 +1,46 @@
 """
 Portfolio backend — FastAPI
 
-All content lives in ../content/*.json. This file contains no personal data:
+Content lives in ../content/<lang>/*.json. This file contains no personal data:
 to update the portfolio you edit the content files, never the code.
 
 Endpoints
-    GET  /api/profile     profile, highlights, expertise
-    GET  /api/experience  work history
-    GET  /api/projects    projects
-    GET  /api/skills      skill groups
-    GET  /api/education   education, certifications, languages
-    POST /api/contact     store a contact message
-    GET  /api/health      liveness check
+    GET  /api/profile?lang=en     profile, highlights, expertise
+    GET  /api/experience?lang=en  work history
+    GET  /api/projects?lang=en    projects
+    GET  /api/projects/{slug}     one project
+    GET  /api/skills?lang=en      skill groups
+    GET  /api/education?lang=en   education, certifications, languages
+    POST /api/contact             store a message, and email it if SMTP is set
+    GET  /api/health              liveness check
 
 Run locally
     uvicorn main:app --reload
 Docs
     http://127.0.0.1:8000/docs
+
+Email forwarding (optional)
+    Set these environment variables and messages are also sent to your inbox.
+    Without them the message is still stored; nothing fails.
+
+    SMTP_HOST=smtp.gmail.com
+    SMTP_PORT=587
+    SMTP_USER=you@gmail.com
+    SMTP_PASSWORD=<a Gmail app password, not your account password>
+    CONTACT_TO=you@gmail.com
 """
 
 import json
+import os
+import smtplib
 import sqlite3
 from datetime import datetime, timezone
+from email.message import EmailMessage
 from functools import lru_cache
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
-from fastapi import FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
 
@@ -34,10 +48,12 @@ BASE_DIR = Path(__file__).resolve().parent
 CONTENT_DIR = BASE_DIR.parent / "content"
 DB_PATH = BASE_DIR / "portfolio.db"
 
+Language = Literal["en", "fr"]
+
 app = FastAPI(
     title="Portfolio API",
-    description="Backend for khadijaa23's portfolio. Content is served from JSON files.",
-    version="1.0.0",
+    description="Backend for khadijaa23's portfolio. Bilingual content served from JSON files.",
+    version="2.0.0",
 )
 
 app.add_middleware(
@@ -57,24 +73,21 @@ app.add_middleware(
 # Content loading
 # --------------------------------------------------------------------------
 @lru_cache(maxsize=None)
-def load_content(name: str) -> Any:
+def load_content(name: str, lang: str) -> Any:
     """
-    Read content/<name>.json.
-
-    lru_cache means the file is read from disk once and kept in memory —
-    the content does not change while the server runs.
+    Read content/<lang>/<name>.json, falling back to English if a translation
+    is missing. lru_cache keeps each file in memory after the first read.
     """
-    path = CONTENT_DIR / f"{name}.json"
-    if not path.is_file():
-        raise HTTPException(status_code=500, detail=f"Missing content file: {name}.json")
+    for candidate in (CONTENT_DIR / lang / f"{name}.json", CONTENT_DIR / "en" / f"{name}.json"):
+        if candidate.is_file():
+            with candidate.open(encoding="utf-8") as file:
+                return json.load(file)
 
-    with path.open(encoding="utf-8") as file:
-        return json.load(file)
+    raise HTTPException(status_code=500, detail=f"Missing content file: {name}.json")
 
 
 # --------------------------------------------------------------------------
 # Models
-# Pydantic validates the incoming request body and documents the API.
 # --------------------------------------------------------------------------
 class ContactMessage(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
@@ -105,14 +118,43 @@ def save_message(payload: ContactMessage) -> int:
         cursor = conn.execute(
             # ? placeholders are what prevent SQL injection.
             "INSERT INTO messages (name, email, message, created_at) VALUES (?, ?, ?, ?)",
-            (
-                payload.name,
-                payload.email,
-                payload.message,
-                datetime.now(timezone.utc).isoformat(),
-            ),
+            (payload.name, payload.email, payload.message,
+             datetime.now(timezone.utc).isoformat()),
         )
         return cursor.lastrowid
+
+
+# --------------------------------------------------------------------------
+# Email
+# --------------------------------------------------------------------------
+def send_email(payload: ContactMessage) -> None:
+    """
+    Forward a message by email. Runs as a background task so the visitor never
+    waits on the mail server, and a failure here does not turn a saved message
+    into an error response.
+    """
+    host = os.getenv("SMTP_HOST")
+    user = os.getenv("SMTP_USER")
+    password = os.getenv("SMTP_PASSWORD")
+    recipient = os.getenv("CONTACT_TO", user)
+
+    if not all([host, user, password, recipient]):
+        return          # email not configured; the message is still stored
+
+    message = EmailMessage()
+    message["Subject"] = f"Portfolio message from {payload.name}"
+    message["From"] = user
+    message["To"] = recipient
+    message["Reply-To"] = payload.email       # replying goes straight to them
+    message.set_content(f"From: {payload.name} <{payload.email}>\n\n{payload.message}")
+
+    try:
+        with smtplib.SMTP(host, int(os.getenv("SMTP_PORT", "587")), timeout=15) as server:
+            server.starttls()
+            server.login(user, password)
+            server.send_message(message)
+    except Exception as error:                # noqa: BLE001 - never break the request
+        print(f"Email delivery failed: {error}")
 
 
 @app.on_event("startup")
@@ -125,63 +167,60 @@ def on_startup() -> None:
 # --------------------------------------------------------------------------
 @app.get("/api/health")
 def health() -> dict:
-    return {"status": "ok"}
+    return {"status": "ok", "email_configured": bool(os.getenv("SMTP_HOST"))}
 
 
 @app.get("/api/profile")
-def get_profile() -> Any:
-    return load_content("profile")
+def get_profile(lang: Language = Query("en")) -> Any:
+    return load_content("profile", lang)
 
 
 @app.get("/api/experience")
-def get_experience() -> Any:
-    return load_content("experience")
+def get_experience(lang: Language = Query("en")) -> Any:
+    return load_content("experience", lang)
 
 
 @app.get("/api/projects")
-def get_projects(featured_only: bool = False) -> Any:
-    """
-    Return the projects. Pass ?featured_only=true to get only featured ones —
-    FastAPI turns that type hint into a documented, validated query parameter.
-    """
-    projects = load_content("projects")
+def get_projects(lang: Language = Query("en"), featured_only: bool = False) -> Any:
+    projects = load_content("projects", lang)
     if featured_only:
         return [p for p in projects if p.get("featured")]
     return projects
 
 
 @app.get("/api/projects/{slug}")
-def get_project(slug: str) -> Any:
-    for project in load_content("projects"):
+def get_project(slug: str, lang: Language = Query("en")) -> Any:
+    for project in load_content("projects", lang):
         if project["slug"] == slug:
             return project
     raise HTTPException(status_code=404, detail="Project not found")
 
 
 @app.get("/api/skills")
-def get_skills() -> Any:
-    return load_content("skills")
+def get_skills(lang: Language = Query("en")) -> Any:
+    return load_content("skills", lang)
 
 
 @app.get("/api/education")
-def get_education() -> Any:
-    return load_content("education")
+def get_education(lang: Language = Query("en")) -> Any:
+    return load_content("education", lang)
 
 
 # --------------------------------------------------------------------------
 # Contact route
 # --------------------------------------------------------------------------
 @app.post("/api/contact", status_code=201)
-def create_message(payload: ContactMessage) -> dict:
+def create_message(payload: ContactMessage, background: BackgroundTasks) -> dict:
     """
-    Store a contact message.
+    Store a contact message and forward it by email if SMTP is configured.
 
-    If the body is malformed FastAPI returns 422 before this function runs,
-    so there is no validation code here.
+    Validation happens before this function runs: a malformed body gets a 422
+    from Pydantic, so there is no checking code here.
     """
     try:
         message_id = save_message(payload)
     except sqlite3.Error:
         raise HTTPException(status_code=500, detail="Could not save the message")
 
+    background.add_task(send_email, payload)
     return {"id": message_id, "detail": "Message received"}

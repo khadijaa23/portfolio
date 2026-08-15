@@ -1,0 +1,99 @@
+[
+  {
+    "slug": "craftschoolship-saas",
+    "role": "Full-Stack Developer (SaaS) & DevOps",
+    "company": "CraftSchoolship",
+    "location": "Tunis",
+    "period": "Sep 2024 — Present",
+    "start": "2024-09",
+    "end": null,
+    "current": true,
+    "summary": "Building eduERP, a multi-tenant SaaS for universities, while keeping six Odoo ERP deployments running in parallel.",
+    "highlights": [
+      "Develop eduERP, a multi-tenant SaaS covering ERP, LMS, CRM, HR, finance, billing and student records, in production at a Tunisian university with 2,000 students and 60 staff.",
+      "Work across the full stack in a team of five, taking part in code reviews to keep quality consistent.",
+      "Gather client requirements in follow-up meetings and turn them into clear, workable development tasks.",
+      "Automate tests, builds and deployments with GitHub Actions pipelines.",
+      "Maintain the Odoo ERP solutions of six international clients in parallel: Python bug fixes, improvements and ongoing support."
+    ],
+    "stack": [
+      "React 19",
+      "TypeScript",
+      "Node.js",
+      "Firebase",
+      "Drizzle ORM",
+      "PostgreSQL",
+      "Python",
+      "Odoo",
+      "GitHub Actions"
+    ]
+  },
+  {
+    "slug": "craftschoolship-odoo",
+    "role": "Odoo ERP Developer & DevOps",
+    "company": "CraftSchoolship",
+    "location": "Tunis",
+    "period": "Sep 2023 — Aug 2024",
+    "start": "2023-09",
+    "end": "2024-08",
+    "current": false,
+    "summary": "Custom Odoo modules in Python for six international universities and private schools, from requirements to production.",
+    "highlights": [
+      "Built and customised Odoo modules in Python for six international clients: admissions, student records, grading, tuition fees and timetables.",
+      "Worked with functional consultants to match each institution's processes.",
+      "Deployed and maintained Odoo on Kubernetes, containerised services with Docker and handled production incidents.",
+      "Designed CI/CD pipelines with automated testing and deployment, cutting delivery time and manual errors."
+    ],
+    "stack": [
+      "Python",
+      "Odoo",
+      "Odoo ORM",
+      "PostgreSQL",
+      "Docker",
+      "Kubernetes",
+      "CI/CD"
+    ]
+  },
+  {
+    "slug": "tym-internship",
+    "role": "Software Developer — Final-year internship",
+    "company": "Train Your Mind (TYM)",
+    "location": "Tunis",
+    "period": "Feb 2022 — Jun 2022",
+    "start": "2022-02",
+    "end": "2022-06",
+    "current": false,
+    "summary": "Frontend and backend of a mental health platform, delivered in an Agile/Scrum team.",
+    "highlights": [
+      "Built the frontend and backend of a mental health platform and delivered a responsive website.",
+      "Contributed to system design, UI implementation, testing and version control across the project."
+    ],
+    "stack": [
+      "Laravel",
+      "PHP",
+      "JavaScript",
+      "MySQL",
+      "Git",
+      "Figma"
+    ]
+  },
+  {
+    "slug": "elhiwar-business",
+    "role": "Business Development Officer (part-time)",
+    "company": "El Hiwar Ettounsi TV",
+    "location": "Tunis",
+    "period": "Jan 2021 — Aug 2021",
+    "start": "2021-01",
+    "end": "2021-08",
+    "current": false,
+    "summary": "Sponsorship acquisition and client relationships at a national television channel.",
+    "highlights": [
+      "Secured sponsorship deals and managed client relationships through meetings and negotiations, building experience in stakeholder and partner management."
+    ],
+    "stack": [
+      "Negotiation",
+      "Client relations",
+      "Stakeholder management"
+    ]
+  }
+]

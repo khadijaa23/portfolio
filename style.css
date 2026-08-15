@@ -351,6 +351,34 @@ strong { font-weight: 600; }
 .nav-links a:hover::after,
 .nav-links a.active::after { transform: scaleX(1); }
 
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.lang-toggle {
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  height: 2.375rem;
+  padding-inline: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.lang-toggle:hover {
+  border-color: var(--lilac);
+  color: var(--violet);
+}
+
 .theme-toggle {
   display: grid;
   place-items: center;
@@ -606,79 +634,135 @@ html[data-theme="dark"] .hero::after {
 
 
 /* ==========================================================================
-   11. TIMELINE (Experience)
-   The rule is a gradient that fades out at the bottom, so the sequence
-   reads as ongoing rather than terminated.
+   11. EXPERIENCE — role cards
+   Each role is a card on a gradient rail. The period sits opposite the
+   title so the eye can scan dates down the right edge, and a one-line
+   summary comes before the detail bullets so the page can be skimmed.
    ========================================================================== */
 
-.timeline {
+.roles {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-8);
 }
 
-.timeline-item {
+.role {
   position: relative;
-  padding-left: var(--space-8);
+  padding: var(--space-8);
+  padding-left: var(--space-12);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.timeline-item::after {
+.role:hover {
+  transform: translateY(-3px);
+  border-color: transparent;
+  box-shadow: var(--glow);
+}
+
+/* The gradient rail down the left edge of each card */
+.role::after {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.35rem;
-  bottom: -3rem;
+  left: var(--space-6);
+  top: var(--space-8);
+  bottom: var(--space-8);
   width: 2px;
-  background: linear-gradient(180deg, var(--lilac), var(--line));
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--lilac), transparent);
 }
 
-.timeline-item:last-child::after { bottom: 0; }
-
-.timeline-item::before {
+/* Marker dot, filled for the current role and hollow for past ones */
+.role::before {
   content: "";
   position: absolute;
-  left: -4px;
-  top: 0.35rem;
+  left: calc(var(--space-6) - 4px);
+  top: var(--space-8);
   z-index: 1;
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--lilac);
+}
+
+.role.is-current::before {
   background: var(--gradient);
-  box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px var(--line);
+  border-color: transparent;
+  box-shadow: 0 0 0 4px var(--violet-soft);
 }
 
-.timeline-date {
-  color: var(--violet);
-  margin-bottom: var(--space-2);
-}
-
-.timeline-company {
-  color: var(--ink-muted);
-  font-size: var(--text-sm);
+.role-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
   margin-bottom: var(--space-4);
 }
 
-.timeline-item > ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+.role-title {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
 }
 
-.timeline-item > ul li {
-  position: relative;
-  padding-left: var(--space-4);
+.role-company {
   font-size: var(--text-sm);
+  color: var(--ink-muted);
+  max-width: none;
+}
+
+.role-sep {
+  margin-inline: var(--space-2);
+  opacity: 0.5;
+}
+
+.role-period {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--violet);
+  background: var(--violet-soft);
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  white-space: nowrap;
+  max-width: none;
+}
+
+.role-summary {
+  font-size: var(--text-base);
+  color: var(--ink);
+  margin-bottom: var(--space-6);
+  max-width: 62ch;
+}
+
+.role-points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.role-points li {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--text-sm);
+  line-height: 1.7;
   color: var(--ink-muted);
 }
 
-.timeline-item > ul li::before {
+/* A small gradient dash instead of a bullet character, so long wrapped
+   lines stay aligned under each other rather than under the marker. */
+.role-points li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.75em;
-  width: 6px;
-  height: 1px;
-  background: var(--lilac);
+  top: 0.85em;
+  width: 12px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--gradient);
 }
 
 
@@ -1125,6 +1209,16 @@ html[data-theme="dark"] .form-status.is-error { color: #F87171; }
 
   .two-col { gap: var(--space-8); }
 
+  .role {
+    padding: var(--space-6);
+    padding-left: var(--space-8);
+  }
+
+  .role::after { left: var(--space-4); top: var(--space-6); bottom: var(--space-6); }
+  .role::before { left: calc(var(--space-4) - 4px); top: var(--space-6); }
+
+  .role-head { flex-direction: column; align-items: flex-start; }
+
   .detail-grid { grid-template-columns: 1fr; gap: var(--space-8); }
 
   .page { padding-block: var(--space-12) var(--space-16); }
@@ -1194,7 +1288,7 @@ html[data-theme="dark"] .form-status.is-error { color: #F87171; }
 
   .nav-links a::after { display: none; }
 
-  .theme-toggle { order: 2; }
+  .nav-controls { order: 2; }
 }
 
 

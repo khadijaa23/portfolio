@@ -1,0 +1,57 @@
+[
+  {
+    "group": "Languages",
+    "items": [
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "SQL",
+      "HTML",
+      "CSS"
+    ]
+  },
+  {
+    "group": "Backend",
+    "items": [
+      "FastAPI",
+      "Odoo",
+      "Node.js",
+      "Express",
+      "REST APIs",
+      "Firebase",
+      "Zod",
+      "Anthropic Claude SDK"
+    ]
+  },
+  {
+    "group": "Frontend",
+    "items": [
+      "React 19",
+      "Tailwind CSS",
+      "TanStack Query",
+      "Radix UI"
+    ]
+  },
+  {
+    "group": "Databases",
+    "items": [
+      "PostgreSQL",
+      "MySQL",
+      "SQLite",
+      "Drizzle ORM",
+      "Odoo ORM"
+    ]
+  },
+  {
+    "group": "DevOps & Cloud",
+    "items": [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "GitHub Actions",
+      "Grafana",
+      "Git",
+      "Vitest"
+    ]
+  }
+]

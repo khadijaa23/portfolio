@@ -28,12 +28,15 @@ data, never code.
 
 ## Features
 
+- Bilingual (English and French) with a language toggle, browser-language
+  detection and a remembered choice
 - Hand-written hash router with parameterised routes (`#/projects/:slug`)
 - Animated page transitions using the View Transitions API
 - Content served from a Python REST API, with the same JSON files as a static
   fallback so the site works when the backend is asleep
 - Dark mode following the system preference, with an explicit choice remembered
-- Contact form validated by Pydantic and stored in SQLite
+- Contact form validated by Pydantic, stored in SQLite and optionally
+  forwarded by email, with a pre-filled `mailto:` fallback when the API is down
 - Interactive API documentation generated from the code at `/docs`
 - Responsive down to mobile, visible keyboard focus, motion disabled under
   `prefers-reduced-motion`
@@ -67,11 +70,8 @@ portfolio/
 ├── script.js               data layer, views, router, theme, menu
 ├── cv/                     downloadable CV
 ├── content/                all portfolio content as JSON
-│   ├── profile.json
-│   ├── experience.json
-│   ├── projects.json
-│   ├── skills.json
-│   └── education.json
+│   ├── en/                 profile, experience, projects, skills, education
+│   └── fr/                 the same five files, translated
 ├── backend/
 │   ├── main.py             FastAPI application
 │   └── requirements.txt
@@ -80,6 +80,7 @@ portfolio/
     ├── frontend.md         routes, design system, conventions
     ├── api.md              endpoint reference
     ├── content.md          content model
+    ├── email.md            contact form storage and forwarding
     ├── development.md      local setup and conventions
     └── deployment.md       going to production
 ```
@@ -90,6 +91,7 @@ portfolio/
 - [Frontend](docs/frontend.md) — routes, design system, how to add a page
 - [API reference](docs/api.md) — endpoints, parameters, responses
 - [Content model](docs/content.md) — the shape of every JSON file
+- [Email](docs/email.md) — how contact messages are stored and forwarded
 - [Development](docs/development.md) — running it locally
 - [Deployment](docs/deployment.md) — GitHub Pages and Render
 
