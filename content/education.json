@@ -1,49 +1,49 @@
 {
-    "education": [
-      {
-        "degree": "M.Sc. in Site Reliability Engineering (SRE)",
-        "school": "Horizon School of Digital Technologies",
-        "year": "2025",
-        "location": "Tunis, Tunisia"
-      },
-      {
-        "degree": "Bachelor's in Software Engineering",
-        "school": "Faculty of Sciences of Tunis (FST, El Manar)",
-        "year": "2022",
-        "location": "Tunis, Tunisia"
-      },
-      {
-        "degree": "Baccalaureate in Mathematics",
-        "school": null,
-        "year": "2019",
-        "location": "Tunisia"
-      }
-    ],
-    "certifications": [
-      {
-        "name": "AWS Academy Graduate — Cloud Foundations",
-        "issuer": "AWS Academy",
-        "year": null
-      },
-      {
-        "name": "Fundamentals of Deep Learning",
-        "issuer": "NVIDIA",
-        "year": "2024"
-      },
-      {
-        "name": "Building Transformer-Based NLP Applications",
-        "issuer": "NVIDIA",
-        "year": "2024"
-      },
-      {
-        "name": "Applications of AI for Predictive Maintenance",
-        "issuer": "NVIDIA",
-        "year": "2024"
-      }
-    ],
-    "languages": [
-      { "language": "Arabic", "level": "Native" },
-      { "language": "English", "level": "Fluent" },
-      { "language": "French", "level": "Professional" }
-    ]
-  }
+  "education": [
+    {
+      "degree": "M.Sc. in Site Reliability Engineering (SRE)",
+      "school": "Horizon School of Digital Technologies",
+      "year": "2025",
+      "location": "Tunis, Tunisia"
+    },
+    {
+      "degree": "Bachelor's in Software Engineering",
+      "school": "Faculty of Sciences of Tunis (FST, El Manar)",
+      "year": "2022",
+      "location": "Tunis, Tunisia"
+    },
+    {
+      "degree": "Baccalaureate in Mathematics",
+      "school": null,
+      "year": "2019",
+      "location": "Tunisia"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Academy Graduate — Cloud Foundations",
+      "issuer": "AWS Academy",
+      "year": null
+    },
+    {
+      "name": "Fundamentals of Deep Learning",
+      "issuer": "NVIDIA",
+      "year": "2024"
+    },
+    {
+      "name": "Building Transformer-Based NLP Applications",
+      "issuer": "NVIDIA",
+      "year": "2024"
+    },
+    {
+      "name": "Applications of AI for Predictive Maintenance",
+      "issuer": "NVIDIA",
+      "year": "2024"
+    }
+  ],
+  "languages": [
+    { "language": "Arabic", "level": "Native" },
+    { "language": "English", "level": "Fluent" },
+    { "language": "French", "level": "Professional" }
+  ]
+}

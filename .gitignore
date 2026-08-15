@@ -4,9 +4,11 @@ venv/
 *.pyc
 .env
 
-# Editor / OS
-.vscode/
-.DS_Store
-
 # Database
 *.db
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

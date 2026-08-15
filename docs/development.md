@@ -4,9 +4,9 @@
 
 - Python 3.11 or newer
 - Git
-- Any browser
+- A browser
 
-No Node.js, no package manager, no build step for the frontend.
+No Node.js, no package manager, no build step.
 
 ## Running it locally
 
@@ -22,7 +22,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-Serves on `http://127.0.0.1:8000`. Docs at `http://127.0.0.1:8000/docs`.
+Serves on `http://127.0.0.1:8000`, docs at `/docs`.
 
 **Frontend**
 
@@ -31,7 +31,10 @@ python3 -m http.server 5500
 ```
 
 Open `http://localhost:5500`. Use a server rather than opening `index.html`
-directly — `file://` pages cannot make `fetch` requests to the API.
+directly: `file://` pages cannot make `fetch` requests.
+
+The frontend works without the backend — it falls back to the JSON files in
+`content/`. Only the contact form needs the API running.
 
 ## Updating content
 
@@ -39,22 +42,24 @@ Edit the JSON files in `content/`. No code changes.
 
 | File | Drives |
 | --- | --- |
-| `profile.json` | Hero, headline numbers, "What I do" cards |
+| `profile.json` | Home page: hero, headline numbers, expertise cards |
 | `experience.json` | Experience timeline |
-| `projects.json` | Projects grid |
-| `skills.json` | Skills groups |
+| `projects.json` | Projects list and each project detail page |
+| `skills.json` | Skills groups on the Background page |
 | `education.json` | Education, certifications, languages |
 
-The backend caches content at startup, so restart `uvicorn` after editing (the
-`--reload` flag does this automatically when a file changes).
+The backend caches content at startup, so restart `uvicorn` after editing —
+`--reload` does this automatically.
+
+See [content.md](content.md) for the shape of each file.
 
 ## Project layout
 
 ```
 portfolio/
-├── index.html            frontend markup
-├── style.css             design tokens, layout, responsive rules
-├── script.js             menu, theme, scroll spy, API calls
+├── index.html            app shell
+├── style.css             design tokens, components, responsive rules
+├── script.js             data layer, views, router, theme, menu
 ├── cv/                   downloadable CV
 ├── content/              all portfolio content as JSON
 ├── backend/
@@ -62,21 +67,20 @@ portfolio/
 │   ├── requirements.txt
 │   └── portfolio.db      SQLite, created on first run (gitignored)
 └── docs/
-    ├── architecture.md
-    ├── api.md
-    └── development.md
 ```
 
 ## Conventions
 
 **CSS** — every color and size comes from a token in `:root`. Add a token rather
-than a hard-coded value, so dark mode and future palette changes stay free.
+than a hard-coded value, so dark mode stays free.
 
 **JavaScript** — the code toggles classes; the CSS decides what those classes
-look like. Avoid setting styles inline from JS.
+look like. Everything interpolated into HTML goes through `esc()`.
 
-**Python** — content files are the source of truth; `main.py` holds no personal
-data. Keep route functions thin and put logic in named functions.
+**Python** — content files are the source of truth. `main.py` holds no personal
+data. Keep route functions thin.
+
+See [frontend.md](frontend.md) for how to add a page.
 
 ## Reading stored messages
 
@@ -85,14 +89,12 @@ cd backend
 sqlite3 portfolio.db "SELECT created_at, name, email, message FROM messages ORDER BY id DESC;"
 ```
 
-## Deployment
+## Committing
 
-The frontend deploys from `main` to GitHub Pages. The backend deploys to Render
-with build command `pip install -r requirements.txt` and start command:
+Small commits with clear messages, one per unit of work:
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port $PORT
+git add .
+git commit -m "Add writing page and route"
+git push
 ```
-
-After deploying, set `API_BASE` in `script.js` to the Render URL and add the
-GitHub Pages origin to the CORS list in `main.py`.

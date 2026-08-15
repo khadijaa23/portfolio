@@ -3,28 +3,40 @@
 Portfolio website built using vanilla JavaScript, Python and FastAPI.
 
 **Live:** https://khadijaa23.github.io/portfolio/
-**API:** https://portfolio-api.onrender.com/docs
 
 ---
 
 ## About
 
-My personal portfolio, built from scratch. The frontend is plain HTML, CSS and
-JavaScript with no framework and no build step. The backend is a REST API
-written in Python with FastAPI that serves every piece of content on the page
-and receives messages from the contact form.
+My personal portfolio, built from scratch. The frontend is a single-page
+application written in plain JavaScript — no framework, no build step, and a
+hand-written client-side router. The backend is a REST API in Python with
+FastAPI that serves every piece of content on the site and receives messages
+from the contact form.
 
-All content lives in `content/*.json`, so updating the site means editing data,
-never code.
+All content lives in `content/*.json`, so updating the portfolio means editing
+data, never code.
 
 ## Tech stack
 
 | Layer | Technology |
 | --- | --- |
-| Frontend | HTML, CSS, JavaScript (no framework) |
+| Frontend | HTML, CSS, JavaScript (no framework, no build) |
 | Backend | Python, FastAPI, Pydantic, Uvicorn |
 | Database | SQLite |
 | Hosting | GitHub Pages (frontend), Render (backend) |
+
+## Features
+
+- Hand-written hash router with parameterised routes (`#/projects/:slug`)
+- Animated page transitions using the View Transitions API
+- Content served from a Python REST API, with the same JSON files as a static
+  fallback so the site works when the backend is asleep
+- Dark mode following the system preference, with an explicit choice remembered
+- Contact form validated by Pydantic and stored in SQLite
+- Interactive API documentation generated from the code at `/docs`
+- Responsive down to mobile, visible keyboard focus, motion disabled under
+  `prefers-reduced-motion`
 
 ## Quick start
 
@@ -43,13 +55,16 @@ uvicorn main:app --reload         # http://127.0.0.1:8000/docs
 python3 -m http.server 5500       # http://localhost:5500
 ```
 
+The frontend runs without the backend: it falls back to the JSON files in
+`content/`. Only the contact form needs the API.
+
 ## Project structure
 
 ```
 portfolio/
-├── index.html              markup
-├── style.css               design tokens, layout, responsive rules
-├── script.js               menu, theme, scroll spy, API calls
+├── index.html              app shell
+├── style.css               design tokens, components, responsive rules
+├── script.js               data layer, views, router, theme, menu
 ├── cv/                     downloadable CV
 ├── content/                all portfolio content as JSON
 │   ├── profile.json
@@ -62,6 +77,7 @@ portfolio/
 │   └── requirements.txt
 └── docs/
     ├── architecture.md     how it fits together and why
+    ├── frontend.md         routes, design system, conventions
     ├── api.md              endpoint reference
     ├── content.md          content model
     ├── development.md      local setup and conventions
@@ -70,22 +86,12 @@ portfolio/
 
 ## Documentation
 
-- [Architecture](docs/architecture.md) — structure and the reasoning behind it
+- [Architecture](docs/architecture.md) — structure, decisions, known limitations
+- [Frontend](docs/frontend.md) — routes, design system, how to add a page
 - [API reference](docs/api.md) — endpoints, parameters, responses
 - [Content model](docs/content.md) — the shape of every JSON file
-- [Development](docs/development.md) — running it locally, conventions
+- [Development](docs/development.md) — running it locally
 - [Deployment](docs/deployment.md) — GitHub Pages and Render
-
-## Features
-
-- Content served from a Python REST API, with static HTML as a fallback if the
-  API is unreachable
-- Dark mode that follows the system preference and remembers an explicit choice
-- Responsive layout with a mobile navigation panel
-- Contact form validated by Pydantic and stored in SQLite
-- Interactive API documentation generated from the code at `/docs`
-- Accessible markup: semantic elements, keyboard focus styles, ARIA state on
-  interactive controls
 
 ## License
 

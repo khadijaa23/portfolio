@@ -2,64 +2,89 @@
 
 ## Overview
 
-The site is split in two halves that can be deployed and scaled separately.
+A single-page application served as static files, backed by a Python REST API.
 
 ```
-┌─────────────────────────────┐        ┌──────────────────────────────┐
-│  Frontend (static)          │        │  Backend (FastAPI)           │
-│  GitHub Pages               │  HTTPS │  Render                      │
-│                             │ ─────► │                              │
-│  index.html                 │  JSON  │  GET  /api/profile           │
-│  style.css                  │ ◄───── │  GET  /api/experience        │
-│  script.js                  │        │  GET  /api/projects          │
-│                             │        │  GET  /api/skills            │
-│  No framework, no build step │        │  GET  /api/education         │
-└─────────────────────────────┘        │  POST /api/contact           │
-                                       └──────────┬───────────────────┘
-                                                  │
-                                    ┌─────────────┴──────────────┐
-                                    │                            │
-                              content/*.json              portfolio.db
-                              (read at startup)           (SQLite, messages)
+┌──────────────────────────────────┐        ┌──────────────────────────────┐
+│  Frontend (static, no build)     │        │  Backend (FastAPI)           │
+│  GitHub Pages                    │  HTTPS │  Render                      │
+│                                  │ ─────► │                              │
+│  index.html   app shell          │  JSON  │  GET  /api/profile           │
+│  script.js    router + views     │ ◄───── │  GET  /api/experience        │
+│  style.css    design system      │        │  GET  /api/projects          │
+│                                  │        │  GET  /api/projects/{slug}   │
+│  fallback ──► content/*.json     │        │  GET  /api/skills            │
+└──────────────────────────────────┘        │  GET  /api/education         │
+                                            │  POST /api/contact           │
+                                            └──────────┬───────────────────┘
+                                                       │
+                                         ┌─────────────┴──────────────┐
+                                         │                            │
+                                   content/*.json              portfolio.db
+                                   (read at startup)           (SQLite, messages)
 ```
+
+## The frontend is a hand-written SPA
+
+`script.js` contains four layers:
+
+1. **Data layer** — `getContent(name)` fetches a content set and caches it in a
+   `Map`, so returning to a page costs nothing.
+2. **Views** — one object per page with `title`, `render()` returning an HTML
+   string, and an optional `mount()` for event listeners that can only be
+   attached after the markup exists.
+3. **Router** — `matchRoute()` compiles a path pattern like `/projects/:slug`
+   into a regular expression and extracts the parameters. `renderRoute()` swaps
+   the contents of `<main id="app">`.
+4. **Chrome** — theme toggle, mobile menu and scroll state. These live outside
+   the router because the header and footer never re-render.
 
 ## Decisions and why
 
-**No frontend framework.** The site is a handful of static sections with light
-interactivity. React would add a build step, a dependency tree and a bundle to
-solve problems this page does not have. Vanilla HTML, CSS and JavaScript keeps
-it fast to load and trivial to host.
+**Hash routing (`#/projects`) rather than clean paths.** With `/projects`, a
+refresh sends that path to the server, and GitHub Pages answers 404 because no
+such file exists. The fragment never reaches the server, so refreshes,
+bookmarks and the back button work on static hosting with no rewrite rules.
 
-**Content lives in JSON, not in code.** Everything personal — profile, roles,
-projects, skills, education — sits in `content/*.json`. Updating the portfolio
-means editing data, never touching `main.py` or the markup. This also means the
-same content can feed the API and, later, a PDF CV generator or a second theme
-without duplication.
+**No frontend framework.** The site is six views with light interactivity.
+React would add a build step, a dependency tree and a bundle to solve problems
+this page does not have. The router that replaces it is about twenty-five lines.
+
+**Content in JSON, not in code.** Everything personal lives in `content/*.json`.
+Updating the portfolio means editing data; `main.py`, `index.html` and
+`script.js` contain no personal content.
+
+**Two sources for the same content.** `getContent` requests the API first and
+falls back to the same JSON files served as static assets. The site is fully
+readable when the backend is asleep, redeploying or simply not running locally.
+Only the contact form genuinely requires the API.
 
 **FastAPI over Flask.** Validation, serialization and OpenAPI documentation come
-from type hints via Pydantic, so there is no hand-written request checking. The
-generated docs at `/docs` are a genuine feature, not a nicety.
+from type hints via Pydantic, so there is no hand-written request checking, and
+`/docs` is generated from the code.
 
-**SQLite for messages.** One file, no server, no connection pooling, no ops
-burden. A contact form receives a handful of messages a week; anything more
-would be over-engineering. Swapping to PostgreSQL later means changing the
-`save_message` function only.
+**SQLite for messages.** One file, no server, no pooling. A contact form
+receives a handful of messages a week. Moving to PostgreSQL later means
+rewriting two functions.
 
-**Progressive enhancement.** The projects section is rendered as static HTML in
-`index.html` and replaced by the API version once the fetch succeeds. If the
-backend is asleep, unreachable or JavaScript fails, the visitor still sees the
-projects. Free hosting tiers sleep; the page should not depend on them.
+**Theming through custom properties.** Every color is a token in `:root`,
+overridden under `html[data-theme="dark"]`. The toggle sets one attribute;
+nothing else in the CSS knows dark mode exists.
 
-**Theming through CSS custom properties.** Every color is a token in `:root`,
-overridden under `html[data-theme="dark"]`. The JavaScript toggle sets one
-attribute; nothing else in the CSS knows dark mode exists.
+**Motion is opt-out at the system level.** The aurora animation, page
+transitions and scroll reveals are all disabled under
+`prefers-reduced-motion: reduce`.
 
 ## Known limitations
 
-- Content is cached at process start (`lru_cache`), so editing a JSON file
-  requires a restart. Fine with `--reload` locally and with a redeploy in
-  production.
-- No rate limiting on `POST /api/contact`. A public form should have it before
-  it attracts spam.
-- Messages are stored but not forwarded by email; they are read from the
-  database or a future admin endpoint.
+- **SEO.** Crawlers that do not execute JavaScript see an empty `<main>`.
+  Acceptable for a portfolio reached from a CV or an application, and solvable
+  later with pre-rendering if it matters.
+- **Content is cached at process start** (`lru_cache`), so editing a JSON file
+  needs a restart. `--reload` handles this locally; production needs a redeploy.
+- **No rate limiting** on `POST /api/contact`. A public form should have it
+  before it attracts spam.
+- **Messages are stored, not forwarded.** They are read from the database; there
+  is no email notification and no admin view yet.
+- **Render's free tier has an ephemeral filesystem**, so `portfolio.db` is reset
+  on every deploy. A persistent disk or hosted PostgreSQL fixes it.
