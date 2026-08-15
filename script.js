@@ -20,7 +20,7 @@
 const API_BASE =
   location.hostname === 'localhost' || location.hostname === '127.0.0.1'
     ? 'http://127.0.0.1:8000'
-    : 'https://YOUR-BACKEND-URL.onrender.com';   // set after deploying
+    : 'https://portfolio-api.onrender.com';   // your actual Render URL
 
 // Content already fetched, kept in memory so moving between pages is instant.
 const cache = new Map();
@@ -411,8 +411,13 @@ const ContactView = {
         form.reset();
         status.textContent = 'Message sent. I will reply soon.';
         status.className = 'form-status is-success';
+
       } catch (error) {
-        status.textContent = `${error.message}. You can also email amrikadija23@gmail.com`;
+        const subject = encodeURIComponent(`Portfolio contact from ${data.name}`);
+        const body = encodeURIComponent(data.message);
+        status.innerHTML =
+          `Could not reach the server. ` +
+          `<a href="mailto:amrikadija23@gmail.com?subject=${subject}&body=${body}">Send it by email instead</a>.`;
         status.className = 'form-status is-error';
       } finally {
         button.disabled = false;
